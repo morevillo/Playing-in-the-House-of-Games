@@ -1,0 +1,19 @@
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.logo {
+  text-align: center;
+  margin: 40px;
+}
+
+.logo img{
+  border-radius: 30px;
+}
+
+.about{
+  text-align: center;
+}
+
+

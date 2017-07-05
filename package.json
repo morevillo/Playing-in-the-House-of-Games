@@ -1,0 +1,17 @@
+{
+  "name": "house_of_games",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.15.2",
+    "body-parser": "*",
+    "method-override": "*",
+    "pg": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
