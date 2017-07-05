@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var port = 8080 || process.env.port;
+var port = process.env.PORT || 8080;
 var path = require('path');
 
 // Database
