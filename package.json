@@ -4,8 +4,10 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.15.2",
     "body-parser": "*",
+    "bootstrap": "^3.3.7",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
     "method-override": "*",
     "pg": "*"
   },
