@@ -6,8 +6,17 @@ var path = require('path');
 // Database
 var pg = require('pg');
 var connectionString = "";
-//var client = new pg.Client(connectionString || process.env.DATABASE_URL);
-//client.connect();
+var client = new pg.Client(process.env.DATABASE_URL);
+client.connect();
+
+//Connect to database
+pg.connect(process.env.DATABASE_URL, function(err, result){
+	if(err){
+		console.error(err);
+	}else{
+		console.log("Connected to heroku Database");
+	}
+});
 
 //Middleware
 var bodyParser = require('body-parser');
