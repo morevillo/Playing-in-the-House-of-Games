@@ -44,10 +44,6 @@ app.get('/', function(req, res) {
     res.render('index.html');
 });
 
-app.get('/disclaimer',function(req, res){
-	res.render('disclaimer.html');
-});
-
 app.get('/register', function(req, res){
 	res.render('register.html');
 });
@@ -56,12 +52,12 @@ app.get('/login', function(req, res){
 	res.render('login.html');
 });
 
-app.get('/pregame', function(req, res){
-	res.render('pregame.html');
+app.get('/disclaimer',function(req, res){
+	res.render('disclaimer.html');
 });
 
-app.get('/postgame', function(req, res){
-	res.render('postgame.html');
+app.get('/pregame', function(req, res){
+	res.render('pregame.html');
 });
 
 app.get('/gameinfo', function(req, res){
@@ -70,4 +66,8 @@ app.get('/gameinfo', function(req, res){
 
 app.get('/game', function(req, res){
 	res.render('game.html');
+});
+
+app.get('/postgame', function(req, res){
+	res.render('postgame.html');
 });
