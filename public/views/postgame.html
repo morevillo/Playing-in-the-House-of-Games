@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<meta charset="UTF-8">
+	<title>Playing in the House of Games</title>	
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Playing In The House of Games</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <!-- <form class="navbar-form navbar-right">
+            <div class="form-group">
+              <input type="text" placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+          </form> -->
+          <ul class="nav navbar-nav navbar-right">
+        	<li><a href="register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        	<li><a href="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      	  </ul>
+
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="logo">
+        <h1>Playing in the House of Games</h1>        
+      </div>
+    </div>
+
+    <div class="container">
+      
+      <div class="form-group">
+        <form role="form" method="post" action="" accept-charset="UTF-8">
+          <div class="lotto">
+            <label for="lotto">Say a lottery tickets costs $50. How much should the prize be for you to buy a ticket?</label>
+            <br>
+            <textarea class="form-control" rows="1" id="lotto"></textarea>
+          </div>
+
+          <br>
+
+          <div class="radio_1">
+            <label for="radio_1">There are two urns, one containing 100 red and black marbles at an unknown ratio, and the second having an exact 50-50 ratio of red and black marbles. If you were to bet $100 on drawing either red or black, which urn would you bet on?</label>
+            <br>
+            <label class="radio-inline"><input type="radio" name="optradio" value="black">Black</label>
+            <label class="radio-inline"><input type="radio" name="optradio" value="red">Red</label>
+          </div>
+
+          <br>
+          <br>
+          
+          <center><input type="submit" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Submit"></center>       
+        </form>
+      </div>
+
+
+
+      <hr>
+
+      <footer>
+        <p>&copy; 2016 Company, Inc.</p>
+      </footer>
+    </div> <!-- /container -->
+
+
+</body>
+</html>
