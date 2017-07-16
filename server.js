@@ -52,7 +52,7 @@ app.get('/register', function(req, res){
 });
 
 app.get('/login', function(req, res){
-	res.render('lpages/login');
+	res.render('pages/login');
 });
 
 app.get('/disclaimer',function(req, res){
