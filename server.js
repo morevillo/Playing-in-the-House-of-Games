@@ -27,8 +27,10 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 var methodOverride = require('method-override');
 
-app.set('views', __dirname + '/public/views');
-app.engine('html', require('ejs').renderFile);
+// app.set('views', __dirname + '/public/views');
+app.set('views', __dirname);
+app.set('view engine', 'ejs');
+// app.engine('html', require('ejs').renderFile);
 
 app.use('/scripts', express.static(__dirname + '/node_modules/bootstrap/dist/'));
 app.use('/css', express.static(__dirname + '/public/css'));
@@ -41,7 +43,8 @@ app.listen(port, function(){
 
 app.get('/', function(req, res) {
     //res.sendFile(path.join(__dirname + '/public/index.html'));
-    res.render('index.html');
+    // res.render('index.html');
+    res.render('pages/home');
 });
 
 app.get('/register', function(req, res){
