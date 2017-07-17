@@ -51,10 +51,6 @@ app.get('/register', function(req, res){
 	res.render('pages/register');
 });
 
-app.get('/login', function(req, res){
-	res.render('pages/login');
-});
-
 app.get('/disclaimer',function(req, res){
 	res.render('pages/disclaimer');
 });
@@ -73,4 +69,13 @@ app.get('/game', function(req, res){
 
 app.get('/postgame', function(req, res){
 	res.render('pages/postgame');
+});
+
+app.get('/login', function(req, res){
+	res.render('pages/login');
+});
+
+app.get('/logout', function(req, res){
+
+
 });
