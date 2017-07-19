@@ -19,13 +19,16 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">Thank you for Sign Up!</div>
                 <div class="panel-body">
-                    <form role="form" method="post" action="" accept-charset="UTF-8">
+                    <form role="form" method="post" action="/register" accept-charset="UTF-8">
                     
                         <label for="fname">First Name</label>
                         <input type="text" id="fname" class="form-control" name="fname" placeholder="Example: John">
                         
                         <label for="lname">Last Name</label>
                         <input type="text" id="lname" class="form-control" name="lname" placeholder="Example: Smith">
+
+                        <label for="username">Last Name</label>
+                        <input type="text" id="username" class="form-control" name="username">
 
                         <label for="email">Email Address</label>
                         <input type="email" id="email" class="form-control" name="email" placeholder="Example: john.smith@gmail.com">
@@ -72,7 +75,38 @@
 </body>
 
 <script type="text/javascript">
+	var ERROR_LOG = console.error.bind(console);
+	var ip = "https://rugged-capitol-reef-56094.herokuapp.com/";
 
+	$.ajax({
+		url: ip+'/register',
+		type: "GET"
+	}).then();
+
+	$('#submitbtn').on('click', function(e){
+		e.preventDefault()
+		$.ajax({
+			type: 'POST',
+			url: ip+'/register',
+			data: JSON.stringify({
+				fname: $('#fname').val(),
+				lname: $('#lname').val(),
+				username: $('#username').val,
+				email: $('#email').val(),
+				gender: $'#gender').val(),
+				ethnicity: $('#ethnicity').val(),
+				password: $('#password').val()
+			}), 
+			contentType: "application/json",
+			dataType: "json",
+			success: function(){
+				window.location.replace(ip + "/pregame");
+			},
+			error: function(){
+
+			}
+		});
+	});
 </script>
 
 </html>

@@ -3,7 +3,27 @@ var app = express();
 var port = process.env.PORT || 8080;
 var path = require('path');
 
-// Database
+//Passport
+var passport = require('passport');
+var LocalStrategy   = require('passport-local').Strategy;
+
+//Session
+var session = require('express-session');
+app.use(session({
+	secret: 'session secret',
+	saveUninitialized: true,
+	resave: true,
+	cookie: {
+		path: '/',
+		httpOnly: false,
+		maxAge: 30*1000 //15 minute Timeout
+	}
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+//================Database Setup====================//
 var pg = require('pg');
 var connectionString = "";
 var client = new pg.Client(process.env.DATABASE_URL);
@@ -18,7 +38,7 @@ pg.connect(process.env.DATABASE_URL, function(err, result){
 	}
 });
 
-//Middleware
+//====================Middleware========================//
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
 	extended: true
@@ -39,17 +59,64 @@ app.listen(port, function(){
 	console.log("Listening on port " + port);
 });
 
-//===================ROUTES===========================/
+//=============Passport Session Setup=================//
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+    done(null, obj);
+});
+
+//Passport Login
+passport.use('local-login', new LocalStrategy({
+	usernameField: 'username',
+	passwordField: 'password',
+	passReqToCallback : true
+}, function(req, username, password, done){
+	//Query for login will be here
+	//var user = client.query("SELECT * FROM [] WHERE username = '" + username + "';", callback);
+	//brcypt stuff Callback function
+}));
+
+//Passport Register/Signup
+passport.use('local-register', new LocalStrategy({
+	usernameField: 'username',
+	passwordField: 'password',
+	passReqToCallback : true
+}, function(req, username, password, done){
+	process.nextTick(function(){
+		// var user = client.query("SELECT * FROM users WHERE ");
+		// if(res.rows[0]!=undefined){
+
+		// }else{
+		// 	var query = client.query("INSERT INTO users (fname, lname, uname, email, gender, age, ethnicity, password) VALUES")
+		// }
+	});
+}));
+
+
+//===================ROUTES===========================//
 
 app.get('/', function(req, res) {
     //res.sendFile(path.join(__dirname + '/public/index.html'));
-    // res.render('index.html');
-    res.render('pages/home');
+    // res.render('index.html')
+;    res.render('pages/home');
 });
 
 app.get('/register', function(req, res){
 	res.render('pages/register');
 });
+
+// app.post('/register', passport.authenticate('local-register', {
+
+// });
+
+// app.post('/register', passport.authenticate('local-signup', {
+//         successRedirect : '/profile', // redirect to the secure profile section
+//         failureRedirect : '/signup', // redirect back to the signup page if there is an error
+//         failureFlash : true // allow flash messages
+//     }));
+
 
 app.get('/disclaimer',function(req, res){
 	res.render('pages/disclaimer');
@@ -75,7 +142,11 @@ app.get('/login', function(req, res){
 	res.render('pages/login');
 });
 
+//app.post('/login', function(req, res){
+
+// });
+
 app.get('/logout', function(req, res){
-
-
+	req.logout();
+	res.redirect('/');
 });
