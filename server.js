@@ -109,7 +109,7 @@ passport.use('local-signup', new LocalStrategy({
 				return done(err);
 			}
 
-			client.query("SELECT * FROM users where username = ($1)", [req.body.username], function(err, result){
+			client.query("SELECT * FROM users where uname = ($1)", [req.body.username], function(err, result){
 				if(err){
 					client.release();
 					return done(err);
