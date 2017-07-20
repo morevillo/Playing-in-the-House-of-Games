@@ -115,7 +115,7 @@ passport.use('local-signup', new LocalStrategy({
 					return done(err);
 				}
 
-				if(res.rows.length){
+				if(result.rows.length){
 					client.release();
 					return done(null, false, req.flash('signupMessage', "Email already has an account"));
 				}else{
