@@ -85,6 +85,7 @@ passport.use('local-register', new LocalStrategy({
 	passReqToCallback : true
 }, function(req, username, password, done){
 	process.nextTick(function(){
+		console.log("Registering new user now!");
 		var user = client.query("SELECT * FROM users WHERE username = '" + username + "';", callback);
 		function callback(err, res){
 			if (res.rows[0] != undefined){ //if username already exists
@@ -137,11 +138,25 @@ app.get('/register', function(req, res){
 //         failureFlash : true // allow flash messages
 // }));
 
-app.post('/register/auth', passport.authenticate('local-register', {
-        successRedirect : '/pregame', // redirect to the secure profile section
-        failureRedirect : '/register', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-}));
+// app.post('/register/auth', passport.authenticate('local-register', {
+//         successRedirect : '/pregame', // redirect to the secure profile section
+//         failureRedirect : '/register', // redirect back to the signup page if there is an error
+//         failureFlash : true // allow flash messages
+// }));
+
+app.post('/register/auth', function (req, res, next){
+	passport.authenticate('local-register', function(err, user, info){
+		if(err){
+			return next(err);
+		}if (user){
+			res.send(200);
+		}else{
+			res.send('Registration unsuccessful');
+			return;
+		}
+	})(req, res, next)
+});
+
 
 app.get('/disclaimer',function(req, res){
 	res.render('pages/disclaimer');
