@@ -103,32 +103,53 @@ passport.use('local-signup', new LocalStrategy({
 }, function(req, username, password, done){
 	process.nextTick(function(){
 		//DO queries here?
-		pool.connect().then((client, err) => {
-			if(err){
-				client.release();
-				return done(err);
-			}
-
-			client.query("SELECT * FROM users where uname = ($1)", [req.body.username], function(err, result){
+		pool.query("SELECT * FROM users where uname = ($1)", [req.body.username], function(err, result){
 				if(err){
-					client.release();
+					//client.release();
 					return done(err);
 				}
 
 				if(result.rows.length){
-					client.release();
+					//client.release();
 					return done(null, false, req.flash('signupMessage', "Email already has an account"));
 				}else{
 					var values = [req.body.fname, req.body.lname, req.body.uname, req.body.email, req.body.age, req.body.gender, req.body.ethnicity, req.body.password];
-					client.query("INSERT INTO users (fname, lname, uname, email, gender, age, ethnicity, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7], function(err, result){
-						client.release();
+					pool.query("INSERT INTO users (fname, lname, uname, email, gender, age, ethnicity, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7], function(err, result){
+						//client.release();
 						if(err){
 							return done(err);
+						}else{
+							console.log("SUCESSFULLY ADDED USER!!");
 						}
 					});
 				}
 			});
-		});
+		// pool.connect().then((client, err) => {
+		// 	if(err){
+		// 		client.release();
+		// 		return done(err);
+		// 	}
+
+		// 	client.query("SELECT * FROM users where uname = ($1)", [req.body.username], function(err, result){
+		// 		if(err){
+		// 			client.release();
+		// 			return done(err);
+		// 		}
+
+		// 		if(result.rows.length){
+		// 			client.release();
+		// 			return done(null, false, req.flash('signupMessage', "Email already has an account"));
+		// 		}else{
+		// 			var values = [req.body.fname, req.body.lname, req.body.uname, req.body.email, req.body.age, req.body.gender, req.body.ethnicity, req.body.password];
+		// 			client.query("INSERT INTO users (fname, lname, uname, email, gender, age, ethnicity, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7], function(err, result){
+		// 				client.release();
+		// 				if(err){
+		// 					return done(err);
+		// 				}
+		// 			});
+		// 		}
+		// 	});
+		// });
 	});
 }));
 
