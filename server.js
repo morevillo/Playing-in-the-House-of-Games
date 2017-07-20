@@ -197,7 +197,7 @@ app.get('/register', function(req, res){
 // }));
 
 app.post('/register/auth', function (req, res, next){
-	passport.authenticate('local-register', function(err, user, info){
+	passport.authenticate('local-signup', function(err, user, info){
 		if(err){
 			return next(err);
 		}if (user){
