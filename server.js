@@ -232,23 +232,23 @@ app.get('/disclaimer',function(req, res){
 });
 
 
-// app.get('/pregame', function(req, res){
-// 	res.render('pages/pregame');
-// });
-
-app.get('/pregame', isLoggedIn, function(req, res){
+app.get('/pregame', function(req, res){
 	res.render('pages/pregame');
 });
 
-function isLoggedIn(req, res, next) {
+// app.get('/pregame', isLoggedIn, function(req, res){
+// 	res.render('pages/pregame');
+// });
 
-    // if user is authenticated in the session, carry on 
-    if (req.isAuthenticated())
-        return next();
+// function isLoggedIn(req, res, next) {
 
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-}
+//     // if user is authenticated in the session, carry on 
+//     if (req.isAuthenticated())
+//         return next();
+
+//     // if they aren't redirect them to the home page
+//     res.redirect('/');
+// }
 
 
 app.get('/gameinfo', function(req, res){
