@@ -96,6 +96,10 @@ passport.use('local-register', new LocalStrategy({
 					console.log("User information " + values[i]);
 				}
 				var query = client.query("INSERT INTO users (fname, lname, uname, email, gender, age, ethnicity, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7]);
+				req.session.username = username;
+				req.session.total = 0;
+				req.session.save();
+				return done(null, user);
 			}
 			return done(null, false);
 		}
