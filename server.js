@@ -85,7 +85,23 @@ passport.use('local-register', new LocalStrategy({
 	passReqToCallback : true
 }, function(req, username, password, done){
 	process.nextTick(function(){
-		// var user = client.query("SELECT * FROM users WHERE ");
+		var user = client.query("SELECT * FROM users WHERE username = '" + username + "';", callback);
+		function callback(err, res){
+			if (res.rows[0] != undefined){ //if username already exists
+				console.log("Username already exists, check if password matches using bcrypt?");
+			}else{
+				console.log("Adding new suer to database");
+				var values = [req.body.fname, req.body.lname, req.body.uname, req.body.email, req.body.age, req.body.gender, req.body.ethnicity, req.body.password]
+				for (var i = 0; i<values.length; i++) {
+					console.log("User information " + values[i]);
+				}
+				var query = client.query("INSERT INTO users (fname, lname, uname, email, gender, age, ethnicity, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7]);
+			}
+			return done(null, false);
+		}
+	 // 	var values = [req.body.fname, req.body.lname, req.body.uname, req.body.email, req.body.age, req.body.gender, req.body.ethnicity, req.body.password]
+		// var query = client.query("INSERT INTO users (fname, lname, uname, email, gender, age, ethnicity, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7]);
+		// // var user = client.query("SELECT * FROM users WHERE ");
 		// if(res.rows[0]!=undefined){
 
 		// }else{
@@ -111,12 +127,17 @@ app.get('/register', function(req, res){
 
 // });
 
-// app.post('/register', passport.authenticate('local-signup', {
-//         successRedirect : '/profile', // redirect to the secure profile section
-//         failureRedirect : '/signup', // redirect back to the signup page if there is an error
+// app.post('/register/auth', passport.authenticate('local-register', {
+//         successRedirect : '/pregame', // redirect to the secure profile section
+//         failureRedirect : '/register', // redirect back to the signup page if there is an error
 //         failureFlash : true // allow flash messages
-//     }));
+// }));
 
+app.post('/register/auth', passport.authenticate('local-register', {
+        successRedirect : '/pregame', // redirect to the secure profile section
+        failureRedirect : '/register', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+}));
 
 app.get('/disclaimer',function(req, res){
 	res.render('pages/disclaimer');
