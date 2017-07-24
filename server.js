@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080;
 var path = require('path');
-var cors = require('cors');
+//var cors = require('cors');
 
 //Passport
 var passport = require('passport');
@@ -22,41 +22,18 @@ app.use(session({
 	}
 }));
 
-// app.all('/*',function(req, res, next) {  
-//       res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-//       res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Authorization');
-//       next();
-//  });  
-// app.use(function (req, res, next) {
-
-//     // Website you wish to allow to connect
-//     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
-
-//     // Request methods you wish to allow
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-//     // Request headers you wish to allow
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-//     // Set to true if you need the website to include cookies in the requests sent
-//     // to the API (e.g. in case you use sessions)
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-
-//     // Pass to next layer of middleware
-//     next();
-// });
-app.use(function(req, res, next) {
-	if(req.headers.origin){
-		res.header("Access-Control-Allow-Origin", "*");
-	  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-	  	res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");	
-  		if(req.method==='OPTIONS'){return res.send(200)}
-	}
+// app.use(function(req, res, next) {
+// 	if(req.headers.origin){
+// 		res.header("Access-Control-Allow-Origin", "*");
+// 	  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+// 	  	res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");	
+//   		if(req.method==='OPTIONS'){return res.send(200)}
+// 	}
 	
-  	next();
-});
+//   	next();
+// });
 
-app.use(cors());
+// app.use(cors());
 //app.options('*', cors());
 
 app.use(flash());
@@ -205,19 +182,6 @@ app.post('/register/auth', passport.authenticate('local-signup', {
         failureRedirect : '/register', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
 }));
-
-// app.post('/register/auth', function (req, res, next){
-// 	passport.authenticate('local-signup', function(err, user, info){
-// 		if(err){
-// 			return next(err);
-// 		}if (user){
-// 			res.send(200);
-// 		}else{
-// 			res.send('Registration unsuccessful');
-// 			return;
-// 		}
-// 	})(req, res, next)
-// });
 
 app.get('/disclaimer',function(req, res){
 	res.render('pages/disclaimer');
