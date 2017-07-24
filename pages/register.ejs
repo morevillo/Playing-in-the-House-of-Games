@@ -57,10 +57,7 @@
                         
                         <label for="password">Password</label>
                         <input type="password" id="password" class="form-control" name="password" placeholder="">
-                        
-                        <label for="verifypass">Verify Password</label>
-                        <input type="password" id="confirmpass" class="form-control" name="verifypass" placeholder="">
-                        
+                                                
                         <center><input type="submit" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Submit"></center>                        
                     </form>
                 </div>
@@ -79,8 +76,8 @@
 
 <script type="text/javascript">
 	var ERROR_LOG = console.error.bind(console);
-	var ip = "https://rugged-capitol-reef-56094.herokuapp.com/";
-
+	var ip = "https://rugged-capitol-reef-56094.herokuapp.com";
+	//var ip = "localhost:8080"
 	$.ajax({
 		url: ip+'/register',
 		type: "GET"
@@ -101,7 +98,7 @@
 				username: $('#username').val,
 				email: $('#email').val(),
 				age: $('#age').val(),
-				gender: $'#gender').val(),
+				gender: $('#gender').val(),
 				ethnicity: $('#ethnicity').val(),
 				password: $('#password').val()
 			}), 
