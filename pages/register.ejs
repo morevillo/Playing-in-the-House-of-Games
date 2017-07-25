@@ -14,6 +14,10 @@
     </div>
 
     <div class="container">
+
+    <% if (message.length > 0) { %>
+		<div class="alert alert-danger"><%= message %></div>
+	<% } %>
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-primary">
@@ -79,10 +83,10 @@
 
 <script type="text/javascript">
 	var ERROR_LOG = console.error.bind(console);
-	var ip = "https://rugged-capitol-reef-56094.herokuapp.com";
+	//var ip = "https://rugged-capitol-reef-56094.herokuapp.com";
 
 	$.ajax({
-		url: ip+'/register',
+		url: '/register',
 		type: "GET"
 	}).then();
 
@@ -91,10 +95,10 @@
 	// }
 
 	$('#submitbtn').on('click', function(e){
-		e.preventDefault()
+		//e.preventDefault()
 		$.ajax({
 			type: 'POST',
-			url: ip+'/register/auth',
+			url: '/register/auth',
 			data: JSON.stringify({
 				fname: $('#fname').val(),
 				lname: $('#lname').val(),

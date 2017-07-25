@@ -105,12 +105,24 @@ passport.use('local-login', new LocalStrategy({
 	passReqToCallback : true
 }, function(req, username, password, done){
 	console.log("Entering login strategy");
-	pool.query("SELECT * FROM users WHERE username = $1", [username], function(err, msg, result){
-		console.log("Querying for login");
+	pool.query("SELECT * FROM users WHERE uname = $1", [username], function(err, result){
+		console.log("Querying for login " + result);
 		if(err){
 			console.log("Unsuccessfull Login :(");
 			return done(err);
-		}else{
+		}
+		//Check if username exists
+		if(!result.rows.length){
+			console.log("Wrong username");
+            return done(null, false, req.flash('loginMessage', 'Incorrect username/password'));
+        }
+        //Check password, TODO: use brcypt
+        if(password!=result.rows[0].password){
+        	console.log("Wrong password");
+        	return done(null, false, req.flash('loginMessage', 'Incorrect username/password'));
+        }
+		else{
+			//Successful login
 			return done(null, result.rows[0]);
 		}
 	});
@@ -138,7 +150,7 @@ passport.use('local-signup', new LocalStrategy({
 					if(result.rows[0] != undefined){
 						// already exists
 						console.log("Already exists");
-						return done(null, false, request.flash('signupMessage', 'That username is already taken.'));						
+						return done(null, false, req.flash('signupMessage', 'That username is already taken. Please enter a new one'));						
 					} else {
 						var user = {
 							username: username,
@@ -169,7 +181,7 @@ passport.use('local-signup', new LocalStrategy({
 app.get('/', function(req, res) {
     //res.sendFile(path.join(__dirname + '/public/index.html'));
     // res.render('index.html')
-;    res.render('pages/home');
+;    res.render('pages/home', {loggedIn:true});
 });
 
 app.get('/register', function(req, res){
@@ -188,17 +200,11 @@ app.get('/disclaimer',function(req, res){
 });
 
 app.get('/pregame', isLoggedIn, function(req, res){
-	res.render('pages/pregame');
+	res.render('pages/pregame', {
+		loggedIn:true,
+		message: req.flash('loginMessage')
+	});
 });
-
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on 
-    if (req.isAuthenticated())
-        return next();
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-}
 
 app.get('/gameinfo', function(req, res){
 	res.render('pages/gameinfo');
@@ -209,7 +215,9 @@ app.get('/game', function(req, res){
 });
 
 app.get('/postgame', isLoggedIn, function(req, res){
-	res.render('pages/postgame');
+	res.render('pages/postgame', {
+		message: req.flash('loginMessage')
+	});
 });
 
 app.get('/login', function(req, res){
@@ -226,6 +234,17 @@ app.get('/logout', function(req, res){
 	req.logout();
 	res.redirect('/');
 });
+
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on 
+    if (req.isAuthenticated()){
+    	return next();
+
+    }
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
 
 
 app.listen(port, function(){
