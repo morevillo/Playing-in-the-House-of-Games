@@ -35,8 +35,8 @@
           <br>
 
           <div>
-            <label for="sel2">Which of the social media websites/applications do you use?(hold shift/ctrl to select more than one)</label>
-            <select multiple class="form-control" id="sel2">
+            <label for="socialmedia">Which of the social media websites/applications do you use?(hold shift/ctrl to select more than one)</label>
+            <select multiple class="form-control" id="socialmedia">
               <option value="facebook">Facebook</option>
               <option value="twitter">Twitter</option>
               <option value="instagram">Instagram</option>
@@ -47,8 +47,8 @@
           <br>
 
           <div>
-            <label for="sel1">How often do you use these social media websites/applications?</label>
-            <select class="form-control" id="sel1">
+            <label for="freq">How often do you use these social media websites/applications?</label>
+            <select class="form-control" id="freq">
               <option value="month">Monthly</option>
               <option value="week">Weekly</option>
               <option value="daily">Daily</option>
@@ -94,13 +94,20 @@
 
 <script type="text/javascript">
 
+// function validateForm(){
+
+// }
+
 $('#submitbtn').on('click', function(e){
     //e.preventDefault()
     $.ajax({
       type: 'POST',
       url: '/pregame',
       data: JSON.stringify({
-        privacy_val: $('input[name="genderS"]:checked').val()
+        privacy_val: $('input[name="optpriv"]:checked').val(),
+        socialmedia: $( "#socialmedia" ).val(),
+        freq: $( "#freq" ).val(),
+        fb_val: $('input[name="optfb"]:checked').val()
       }), 
       contentType: "application/json",
       dataType: "json",

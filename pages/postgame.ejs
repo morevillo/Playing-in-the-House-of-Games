@@ -28,8 +28,8 @@
           <div class="radio_1">
             <label for="radio_1">There are two urns, one containing 100 red and black marbles at an unknown ratio, and the second having an exact 50-50 ratio of red and black marbles. If you were to bet $100 on drawing either red or black, which urn would you bet on?</label>
             <br>
-            <label class="radio-inline"><input type="radio" name="optradio" value="black">Black</label>
-            <label class="radio-inline"><input type="radio" name="optradio" value="red">Red</label>
+            <label class="radio-inline"><input type="radio" name="opturn" value="black">Black</label>
+            <label class="radio-inline"><input type="radio" name="opturn" value="red">Red</label>
           </div>
 
           <br>
@@ -49,6 +49,26 @@
 </body>
 
 <script type="text/javascript">
+
+$('#submitbtn').on('click', function(e){
+    //e.preventDefault()
+    $.ajax({
+      type: 'POST',
+      url: '/postgame',
+      data: JSON.stringify({
+        lotto: $( "#lotto" ).val(),
+        urn: $('input[name="opturn"]:checked').val()        
+      }), 
+      contentType: "application/json",
+      dataType: "json",
+      success: function(){
+        window.location.replace(ip + "/pregame");
+      },
+      error: function(){
+
+      }
+    });
+  });
 
 </script>
 

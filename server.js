@@ -192,8 +192,8 @@ passport.use('local-signup', new LocalStrategy({
 
 app.get('/', function(req, res) {
     //res.sendFile(path.join(__dirname + '/public/index.html'));
-    // res.render('index.html')
-;    res.render('pages/home');
+    // res.render('index.html');
+    res.render('pages/home');
 });
 
 app.get('/register', function(req, res){
@@ -202,7 +202,7 @@ app.get('/register', function(req, res){
 });
 
 app.post('/register/auth', passport.authenticate('local-signup', {
-        successRedirect : '/pregame', // redirect to the secure profile section
+        successRedirect : '/pregame', // redirect to pregame questionnaire if success
         failureRedirect : '/register', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
 }));
@@ -213,7 +213,6 @@ app.get('/disclaimer',function(req, res){
 
 app.get('/pregame', isLoggedIn, function(req, res){
 	res.render('pages/pregame', {
-		loggedIn:true,
 		message: req.flash('loginMessage')
 	});
 });
@@ -237,7 +236,7 @@ app.get('/login', function(req, res){
 });
 
 app.post('/login/auth', passport.authenticate('local-login', {
-    successRedirect : '/pregame', // redirect to the secure profile section
+    successRedirect : '/pregame', // redirect to pregame questionnaire if success
     failureRedirect : '/login', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
 }));
@@ -248,7 +247,6 @@ app.get('/logout', function(req, res){
 });
 
 function isLoggedIn(req, res, next) {
-
     // if user is authenticated in the session, carry on 
     if (req.isAuthenticated()){
     	return next();
@@ -256,15 +254,6 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 }
-
-function checkLogin(req, res, next){
-	if(req.isAuthenticated()){
-		return true;
-	}else{
-		return false;
-	}
-}
-
 
 app.listen(port, function(){
 	console.log("Listening on port " + port);
