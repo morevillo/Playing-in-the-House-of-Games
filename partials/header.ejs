@@ -20,10 +20,13 @@
             <button type="submit" class="btn btn-success">Sign in</button>
           </form> -->
           <ul class="nav navbar-nav navbar-right">
-         
-            <li><a href="register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-          
+            <% if (isLoggedIn) { %>
+                <li><a><span class="glyphicon glyphicon-user"></span>Hello <%= username %></a></li>
+                <li><a href="logout"><span class="glyphicon glyphicon-remove"></span> Logout</a></li>
+            <% } else{%>            
+                <li><a href="register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <% } %>          
       	  </ul>
 
         </div><!--/.navbar-collapse -->

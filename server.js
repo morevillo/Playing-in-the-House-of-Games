@@ -18,7 +18,7 @@ app.use(session({
 	cookie: {
 		path: '/',
 		httpOnly: false,
-		maxAge: 30*1000 //15 minute Timeout
+		maxAge: 900000 //15 minute Timeout
 	}
 }));
 
@@ -39,6 +39,18 @@ app.use(session({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(function(req, res, next){
+    if(req.user){
+    	console.log("USERNAME JSON: " + JSON.stringify(req.user));
+        res.locals.username = req.user.uname;
+        res.locals.isLoggedIn = true;
+    } else {
+        res.locals.username = "None";
+        res.locals.isLoggedIn = false;
+    }
+    next();
+});
 
 //================Database Setup====================//
 var pg = require('pg');
@@ -181,7 +193,7 @@ passport.use('local-signup', new LocalStrategy({
 app.get('/', function(req, res) {
     //res.sendFile(path.join(__dirname + '/public/index.html'));
     // res.render('index.html')
-;    res.render('pages/home', {loggedIn:true});
+;    res.render('pages/home');
 });
 
 app.get('/register', function(req, res){
@@ -240,10 +252,17 @@ function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on 
     if (req.isAuthenticated()){
     	return next();
-
     }
     // if they aren't redirect them to the home page
     res.redirect('/');
+}
+
+function checkLogin(req, res, next){
+	if(req.isAuthenticated()){
+		return true;
+	}else{
+		return false;
+	}
 }
 
 
