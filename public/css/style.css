@@ -3,7 +3,7 @@ body {
   padding-bottom: 20px;
 }
 
-/* Home Page CSS*/
+/* Home Page*/
 .logo {
   text-align: center;
   margin: 40px;
@@ -21,6 +21,23 @@ body {
   margin: auto;
   width: 75%;
 }
+
+/* Disclaimer */
+.tnc{
+	width: 80%;
+	margin: auto;
+}
+
+.tnc li{
+	padding: 0.5%;
+}
+
+/* Register Page */
+.form-control{
+	margin-top: 3px;
+	margin-bottom: 7px;
+}
+
 
 /* Pregame Questionnaire*/
 .radio_1{

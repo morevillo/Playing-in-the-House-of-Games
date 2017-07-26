@@ -18,27 +18,28 @@
     <% if (message.length > 0) { %>
 		<div class="alert alert-danger"><%= message %></div>
 	<% } %>
+
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-primary">
-                <div class="panel-heading">Register Your Details Here</div>
+            <div class="panel panel-info">
+                <div class="panel-heading"><center>Register Your Details Here</center></div>
                 <div class="panel-body">
                     <form role="form" method="post" action="/register/auth" accept-charset="UTF-8">
                     
                         <label for="fname">First Name</label>
-                        <input type="text" id="fname" class="form-control" name="fname" placeholder="Example: John">
+                        <input type="text" id="fname" required class="form-control" name="fname" placeholder="Example: John">
                         
                         <label for="lname">Last Name</label>
-                        <input type="text" id="lname" class="form-control" name="lname" placeholder="Example: Smith">
+                        <input type="text" id="lname" required class="form-control" name="lname" placeholder="Example: Smith">
 
                         <label for="username">Username</label>
-                        <input type="text" id="username" class="form-control" name="username">
+                        <input type="text" id="username" required class="form-control" name="username">
 
                         <label for="email">Email Address</label>
-                        <input type="email" id="email" class="form-control" name="email" placeholder="Example: john.smith@gmail.com">
+                        <input type="email" id="email" required class="form-control" name="email" placeholder="Example: john.smith@gmail.com">
 
                         <label for="age">Age</label>
-                        <input type="number" id="age" class="form-control" name="age">
+                        <input type="number" id="age" required class="form-control" name="age" min="18">
                         
                         <label for="gender" class="m-t-10">Select your Gender</label>
                         <select id="gender" class="form-control" name="gender">
@@ -60,12 +61,9 @@
                         </select>
                         
                         <label for="password">Password</label>
-                        <input type="password" id="password" class="form-control" name="password" placeholder="">
+                        <input type="password" id="password" required class="form-control" name="password" placeholder="">
                         
-                        <label for="verifypass">Verify Password</label>
-                        <input type="password" id="confirmpass" class="form-control" name="verifypass" placeholder="">
-                        
-                        <center><input type="submit" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Submit"></center> 
+                        <center><input type="submit" onchange="validatePassword()" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Submit"></center> 
 
                         <br>
 
@@ -94,9 +92,23 @@
 		type: "GET"
 	}).then();
 
-	// function verify(pw){
+    window.onload = function () {
+        document.getElementById("password").onchange = validatePassword;
+    }
 
-	// }
+    function validatePassword(){
+        var pw=document.getElementById("password").value;
+        if(pw.length < 6) {
+            document.getElementById("password").setCustomValidity("Passwords Should contain mroe than six characters");
+            return false;
+        }
+        else if(pw.length == 0){
+            document.getElementById("confirm_password").setCustomValidity('Please fill in this field');
+            return false;
+        }else{
+        	document.getElementById("confirm_password").setCustomValidity('');
+        }
+    }
 
 	$('#submitbtn').on('click', function(e){
 		//e.preventDefault()

@@ -106,7 +106,7 @@ $('#submitbtn').on('click', function(e){
       data: JSON.stringify({
         privacy_val: $('input[name="optpriv"]:checked').val(),
         socialmedia: $( "#socialmedia" ).val(),
-        freq: $( "#freq" ).val(),
+        freq: $('#freq').val(),
         fb_val: $('input[name="optfb"]:checked').val()
       }), 
       contentType: "application/json",
