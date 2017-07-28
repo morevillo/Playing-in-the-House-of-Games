@@ -16,11 +16,11 @@
     <div class="container">
       
       <div class="form-group">
-        <form role="form" method="post" action="" accept-charset="UTF-8">
+        <form role="form" method="post" action="/pregame/auth" accept-charset="UTF-8">
           <div class="radio_1">
             <label for="radio_1">On a scale of 1-10, where 10 being the highest, how much do you value your privacy?</label>
             <br>
-            <label class="radio-inline"><input type="radio" name="optpriv" value="1">1</label>
+            <label class="radio-inline"><input required type="radio" name="optpriv" value="1">1</label>
             <label class="radio-inline"><input type="radio" name="optpriv" value="2">2</label>
             <label class="radio-inline"><input type="radio" name="optpriv" value="3">3</label>
             <label class="radio-inline"><input type="radio" name="optpriv" value="4">4</label>
@@ -48,7 +48,7 @@
 
           <div>
             <label for="freq">How often do you use these social media websites/applications?</label>
-            <select class="form-control" id="freq">
+            <select required class="form-control" id="freq">
               <option value="month">Monthly</option>
               <option value="week">Weekly</option>
               <option value="daily">Daily</option>
@@ -62,7 +62,7 @@
           <div class="radio_2">
             <label for="radio_2">On a scale of 1-10, where 10 being the highest, how much do you know about Facebook's Terms and Conditions?</label>
             <br>
-            <label class="radio-inline"><input type="radio" name="optfb" value="1">1</label>
+            <label class="radio-inline"><input required type="radio" name="optfb" value="1">1</label>
             <label class="radio-inline"><input type="radio" name="optfb" value="2">2</label>
             <label class="radio-inline"><input type="radio" name="optfb" value="3">3</label>
             <label class="radio-inline"><input type="radio" name="optfb" value="4">4</label>
@@ -102,7 +102,7 @@ $('#submitbtn').on('click', function(e){
     //e.preventDefault()
     $.ajax({
       type: 'POST',
-      url: '/pregame',
+      url: '/pregame/auth',
       data: JSON.stringify({
         privacy_val: $('input[name="optpriv"]:checked').val(),
         socialmedia: $( "#socialmedia" ).val(),

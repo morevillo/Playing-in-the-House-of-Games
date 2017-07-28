@@ -99,7 +99,9 @@ app.set('view engine', 'ejs');
 // app.engine('html', require('ejs').renderFile);
 
 app.use('/scripts', express.static(__dirname + '/node_modules/bootstrap/dist/'));
-app.use('/css', express.static(__dirname + '/public/css'));
+// app.use('/css', express.static(__dirname + '/public/css'));
+
+app.use('/public', express.static(__dirname + '/public'));
 
 //=============Passport Session Setup=================//
 passport.serializeUser(function(user, done) {
@@ -184,7 +186,6 @@ passport.use('local-signup', new LocalStrategy({
 					}
 				}
 			});
-
 	});
 }));
 
@@ -217,6 +218,14 @@ app.get('/pregame', isLoggedIn, function(req, res){
 	});
 });
 
+app.post('/pregame/auth', function(req, res){
+	console.log("YOUR USERNAME IS: " + req.user.uname);
+	var values = [req.user.uname, req.body.privacy_val, req.body.socialmedia, req.body.freq, req.body.fb_val];
+	pool.query("INSERT INTO pregame (username, priv_val, socialmedia, freq, tnc) VALUES ($1, $2, $3, $4, $5);", values, function(err, result){
+
+	});
+});
+
 app.get('/gameinfo', function(req, res){
 	res.render('pages/gameinfo');
 });
@@ -246,6 +255,10 @@ app.get('/logout', function(req, res){
 	res.redirect('/');
 });
 
+app.listen(port, function(){
+	console.log("Listening on port " + port);
+});
+
 function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on 
     if (req.isAuthenticated()){
@@ -254,7 +267,3 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 }
-
-app.listen(port, function(){
-	console.log("Listening on port " + port);
-});

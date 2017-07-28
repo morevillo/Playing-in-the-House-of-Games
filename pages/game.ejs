@@ -14,68 +14,27 @@
     </div>
 
     <div class="container">
-
-    	<div class="customload">
-      		<div class="loader"></div>
-      		<p>Looking for another player....</p>
-    	</div>
-
     	<div class="about">
     		<div class="panel panel-info">
-    			<div class="panel-heading"><h4><center>Game Overview</center></h4></div>
+    			<div class="panel-heading"><h4><center>Now in Ultimatum Game</center></h4></div>
     			<div class="panel-body">
     				The game begins with you initially being given $100. The game will consist of three rounds. At the beginning of each round, the opposing player will not know how much money you initially have, and you will be asked to make a bet which you will offer to the opposing player. The opposing player will then decide whether to accept this offer or not. If the opposing player accepts this bet, then both players win where you will keep the amount you have remaining and the opposing player will win the amount you have given. If however the opposing player declines the offer, both players lose and receive nothing.
-    			</div>    			
+    			</div>
+    			<div class="col-md-6">
+    				<img src="C:\Uni\2017\ENGR489\Test\public\images\player1.jpg">
+    			</div>
+    			<div class="col-md-6">
+    				<img src="/images/player2.jpg">
+    			</div>
     		</div>
-
-    		<br>
-
-    		<a id="begin" class="btn btn-success btn-lg">Begin Game</a>
-
-    		<br>
-    		<br>
-
-    		<div>
-    			<img class="step1" src="/public/images/whole1.jpg">    			
-    		</div>
-
-    		<br>
-    		<br>
-    		<br>
-
-    		<div>
-    			<img class="step2" src="/public/images/winlose.jpg">
-    		</div>
+    		<a href="game" class="btn btn-success btn-lg">Begin Game</a>
     	</div>
-
-    	<hr>
-
-      <footer>
-        <p>&copy; 2016 Company, Inc.</p>
-      </footer>
     </div>
 	
 </body>
 
 <script type="text/javascript">
-	$(document).ready(function () {
-          // Hide the div
-          // Show the div after 5s
-          $(".customload").hide();
-    });
 
-	$('#begin').on('click', function(e){
-		$(".about").hide();
-        $(".customload").show();
-        setTimeout(function(){
-        	window.location.href = 'game'; 
-     	}, 5000);
-	});
-
-
-	// setTimeout(function(){
- //       window.location.href = 'form2.html';
- //    }, 5000);
 </script>
 
 </html>
