@@ -43,7 +43,7 @@ app.use(passport.session());
 app.use(function(req, res, next){
     if(req.user){
     	console.log("USERNAME JSON: " + JSON.stringify(req.user));
-        res.locals.username = req.user.uname;
+        res.locals.username = req.user.username;
         res.locals.isLoggedIn = true;
     } else {
         res.locals.username = "None";
@@ -119,7 +119,7 @@ passport.use('local-login', new LocalStrategy({
 	passReqToCallback : true
 }, function(req, username, password, done){
 	console.log("Entering login strategy");
-	pool.query("SELECT * FROM users WHERE uname = $1", [username], function(err, result){
+	pool.query("SELECT * FROM users WHERE username = $1", [username], function(err, result){
 		console.log("Querying for login " + result);
 		if(err){
 			console.log("Unsuccessfull Login :(");
@@ -155,7 +155,7 @@ passport.use('local-signup', new LocalStrategy({
 	process.nextTick(function(){
 		//DO queries here?
 		console.log("Querying now...");
-		pool.query("SELECT * FROM users where uname = $1", [req.body.username], function(err, result){
+		pool.query("SELECT * FROM users where username = $1", [req.body.username], function(err, result){
 			// console.log("Querying now...");
 				if(err){
 					//client.release();
@@ -173,7 +173,7 @@ passport.use('local-signup', new LocalStrategy({
 
 						console.log("Doesn't exist");
 						var values = [req.body.fname, req.body.lname, username, req.body.email, req.body.gender, req.body.age, req.body.ethnicity, req.body.password];
-						pool.query("INSERT INTO users (fname, lname, uname, email, gender, age, ethnicity, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", values, function(err, result){
+						pool.query("INSERT INTO users (fname, lname, username, email, gender, age, ethnicity, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", values, function(err, result){
 							//client.release();
 							if(err){
 								return done(err);
@@ -219,8 +219,8 @@ app.get('/pregame', isLoggedIn, function(req, res){
 });
 
 app.post('/pregame/auth', function(req, res){
-	console.log("YOUR USERNAME IS: " + req.user.uname);
-	var values = [req.user.uname, req.body.privacy_val, req.body.socialmedia, req.body.freq, req.body.fb_val];
+	console.log("YOUR USERNAME IS: " + req.user.username);
+	var values = [req.user.username, req.body.privacy_val, req.body.socialmedia, req.body.freq, req.body.fb_val];
 	pool.query("INSERT INTO pregame (username, priv_val, socialmedia, freq, tnc) VALUES ($1, $2, $3, $4, $5);", values, function(err, result){
 
 	});
