@@ -52,6 +52,8 @@ app.use(function(req, res, next){
     next();
 });
 
+app.use
+
 //================Database Setup====================//
 var pg = require('pg');
 
@@ -219,11 +221,32 @@ app.get('/pregame', isLoggedIn, function(req, res){
 });
 
 app.post('/pregame/auth', function(req, res){
-	console.log("YOUR USERNAME IS: " + req.user.username);
-	var values = [req.user.username, req.body.privacy_val, req.body.socialmedia, req.body.freq, req.body.fb_val];
-	pool.query("INSERT INTO pregame (username, priv_val, socialmedia, freq, tnc) VALUES ($1, $2, $3, $4, $5);", values, function(err, result){
+	// // console.log("YOUR USERNAME IS: " + req.user.username);
+	// console.log("BOODY:");
+	// console.log(req.body);
+	// console.log("END");
+	var values = [req.user.username, req.body.privacy_val, req.body.social_media, req.body.freq, req.body.fb_val];
+	// var i = 0;
+	// for(i=0; i < values.length; i++){
+	// 	console.log("VALUES: " + values[i]);
+	// }
+	// console.log("USERNAME: " +  req.user.username);
+	// console.log("PRIVACY: " + req.body.privacy_val);
+	// console.log("SOCIAL MEDIA: " + req.body.social_media);
+	// console.log("FREQ: " + req.body.freq);
+	// console.log("FB_VAL: " + req.body.fb_val);
 
+	pool.query("INSERT INTO pregame (username, priv_val, social_media, freq, tnc) VALUES ($1, $2, $3, $4, $5);", values, function(err, result){
+		if(err){
+			console.log("Error inserting items to database in pregame questionnaire");
+			console.log(err);
+			console.log("END");
+			return;
+		}
+		// res.redirect('../gameinfo');
 	});
+
+	res.send({redirect: '/gameinfo'});
 });
 
 app.get('/gameinfo', function(req, res){
@@ -238,6 +261,26 @@ app.get('/postgame', isLoggedIn, function(req, res){
 	res.render('pages/postgame', {
 		message: req.flash('loginMessage')
 	});
+});
+
+app.post('/postgame/auth', function(req, res){
+	console.log("YOUR USERNAME IS: " + req.user.username);
+	var values = [req.user.username, req.body.lotto, req.body.urn];
+	var i = 0;
+	for(i=0; i < values.length; i++){
+		console.log("VALUES: " + values[i]);
+	}
+
+	pool.query("INSERT INTO postgame (username, lotto, urn) VALUES ($1, $2, $3);", values, function(err, result){
+		if(err){
+			console.log("Error inserting items to database in pregame questionnaire");
+			return;
+		}
+	});
+});
+
+app.get('/finish', function(req, res){
+	res.render('pages/finish');
 });
 
 app.get('/login', function(req, res){

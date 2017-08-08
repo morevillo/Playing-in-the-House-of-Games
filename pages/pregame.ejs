@@ -14,9 +14,11 @@
     </div>
 
     <div class="container">
+
+      <div id="error"></div>
       
       <div class="form-group">
-        <form role="form" method="post" action="/pregame/auth" accept-charset="UTF-8">
+        <form>
           <div class="radio_1">
             <label for="radio_1">On a scale of 1-10, where 10 being the highest, how much do you value your privacy?</label>
             <br>
@@ -35,8 +37,8 @@
           <br>
 
           <div>
-            <label for="socialmedia">Which of the social media websites/applications do you use?(hold shift/ctrl to select more than one)</label>
-            <select multiple class="form-control" id="socialmedia">
+            <label for="social_media">Which of the social media websites/applications do you use?(hold shift/ctrl to select more than one)</label>
+            <select multiple class="form-control" id="social_media">
               <option value="facebook">Facebook</option>
               <option value="twitter">Twitter</option>
               <option value="instagram">Instagram</option>
@@ -77,11 +79,9 @@
           <br>
           <br>
           
-          <center><input type="submit" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Submit"></center>       
+          <center><button type="button" class="btn btn-primary m-t-10" onclick="submit_data()">Submit</button></center>       
         </form>
       </div>
-
-
 
       <hr>
 
@@ -94,31 +94,50 @@
 
 <script type="text/javascript">
 
-// function validateForm(){
+  function validate_form(){
+    var priv = $('input[name="optpriv"]:checked').val();
+    if(priv == null){
+      return false;
+    }
+    var social = $( "#social_media" ).val();
+    if(social == {}){
+      return false;
+    }
+    var fb = $('input[name="optfb"]:checked').val();
+    if(fb == null){
+      return false;
+    }
+    return true;
+  }
 
-// }
-
-$('#submitbtn').on('click', function(e){
-    //e.preventDefault()
+// $('#submitbtn').on('click', function(e){
+   function submit_data(){
+    console.log("SENDING DATA");
+    if(!validate_form()){
+      document.getElementById('error').innerHTML = '<div class="alert alert-danger">Please fill up all fields</div>';      
+      return;
+    }
     $.ajax({
       type: 'POST',
       url: '/pregame/auth',
       data: JSON.stringify({
         privacy_val: $('input[name="optpriv"]:checked').val(),
-        socialmedia: $( "#socialmedia" ).val(),
+        social_media: $( "#social_media" ).val(),
         freq: $('#freq').val(),
         fb_val: $('input[name="optfb"]:checked').val()
       }), 
       contentType: "application/json",
       dataType: "json",
       success: function(){
-        window.location.replace(ip + "/pregame");
+        window.location = "/gameinfo";
+        // console.log("DONE");
       },
       error: function(){
-
+        console.log("Error submitting info :(");
       }
     });
-  });
+   }
+    
 
 </script>
 

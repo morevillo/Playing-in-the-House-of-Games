@@ -16,11 +16,11 @@
     <div class="container">
       
       <div class="form-group">
-        <form role="form" method="post" action="" accept-charset="UTF-8">
+        <form role="form" method="post" action="/postgame/auth" accept-charset="UTF-8">
           <div class="lotto">
             <label for="lotto">Say a lottery tickets costs $50. How much should the prize be for you to buy a ticket?</label>
             <br>
-            <textarea class="form-control" rows="1" id="lotto"></textarea>
+            <input type="number" required class="form-control" id="lotto"></input>
           </div>
 
           <br>
@@ -28,8 +28,8 @@
           <div class="radio_1">
             <label for="radio_1">There are two urns, one containing 100 red and black marbles at an unknown ratio, and the second having an exact 50-50 ratio of red and black marbles. If you were to bet $100 on drawing either red or black, which urn would you bet on?</label>
             <br>
-            <label class="radio-inline"><input type="radio" name="opturn" value="black">Black</label>
-            <label class="radio-inline"><input type="radio" name="opturn" value="red">Red</label>
+            <label class="radio-inline"><input required type="radio" name="opturn" value="unknown">Unkown Ratio</label>
+            <label class="radio-inline"><input type="radio" name="opturn" value="50-50">50-50 Ratio</label>
           </div>
 
           <br>
@@ -54,7 +54,7 @@ $('#submitbtn').on('click', function(e){
     //e.preventDefault()
     $.ajax({
       type: 'POST',
-      url: '/postgame',
+      url: '/postgame/auth',
       data: JSON.stringify({
         lotto: $( "#lotto" ).val(),
         urn: $('input[name="opturn"]:checked').val()        
@@ -62,7 +62,7 @@ $('#submitbtn').on('click', function(e){
       contentType: "application/json",
       dataType: "json",
       success: function(){
-        window.location.replace(ip + "/pregame");
+        window.location.replace(ip + "/finish");
       },
       error: function(){
 
