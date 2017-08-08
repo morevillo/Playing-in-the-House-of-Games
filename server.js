@@ -277,6 +277,8 @@ app.post('/postgame/auth', function(req, res){
 			return;
 		}
 	});
+
+	res.send({redirect: '/gameinfo'});
 });
 
 app.get('/finish', function(req, res){

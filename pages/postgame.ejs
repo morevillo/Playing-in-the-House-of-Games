@@ -14,9 +14,11 @@
     </div>
 
     <div class="container">
+
+      <div id="error"></div>
       
       <div class="form-group">
-        <form role="form" method="post" action="/postgame/auth" accept-charset="UTF-8">
+        <form>
           <div class="lotto">
             <label for="lotto">Say a lottery tickets costs $50. How much should the prize be for you to buy a ticket?</label>
             <br>
@@ -35,7 +37,7 @@
           <br>
           <br>
           
-          <center><input type="submit" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Submit"></center>       
+           <center><button type="button" class="btn btn-primary m-t-10" onclick="submit_data()">Submit</button></center>     
         </form>
       </div>
 
@@ -50,9 +52,26 @@
 
 <script type="text/javascript">
 
-$('#submitbtn').on('click', function(e){
-    //e.preventDefault()
-    $.ajax({
+function validate_form(){
+  var lotto = $( "#lotto" ).val();
+  if(lotto == null){
+    return false;
+  }
+  var urn = $('input[name="opturn"]:checked').val();  
+  if(urn == null){
+    return false;
+  }
+  return true;
+}
+
+function submit_data(){
+
+  if(!validate_form()){
+    document.getElementById('error').innerHTML = '<div class="alert alert-danger">Please fill up all fields</div>';      
+    return;
+  }
+
+  $.ajax({
       type: 'POST',
       url: '/postgame/auth',
       data: JSON.stringify({
@@ -63,12 +82,33 @@ $('#submitbtn').on('click', function(e){
       dataType: "json",
       success: function(){
         window.location.replace(ip + "/finish");
+        console.log("DONE");
       },
       error: function(){
 
       }
     });
-  });
+}
+
+// $('#submitbtn').on('click', function(e){
+//     //e.preventDefault()
+//     $.ajax({
+//       type: 'POST',
+//       url: '/postgame/auth',
+//       data: JSON.stringify({
+//         lotto: $( "#lotto" ).val(),
+//         urn: $('input[name="opturn"]:checked').val()        
+//       }), 
+//       contentType: "application/json",
+//       dataType: "json",
+//       success: function(){
+//         window.location.replace(ip + "/finish");
+//       },
+//       error: function(){
+
+//       }
+//     });
+//   });
 
 </script>
 
