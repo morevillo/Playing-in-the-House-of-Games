@@ -11,6 +11,7 @@ body {
 
 .logo img{
   border-radius: 30px;
+  width: 40%;
 }
 
 .about{
@@ -86,3 +87,13 @@ text-align: center;
   margin-left: 8.8%;
 }
 
+/* Game Page Player Images */
+
+.player{
+  width: 50%;
+}
+
+#amount{
+  margin: auto;
+  width: 40%;
+}

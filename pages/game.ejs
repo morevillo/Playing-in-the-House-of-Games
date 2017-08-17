@@ -7,9 +7,10 @@
 <body>
 	<% include ../partials/header %>
 
-	<div class="jumbotron">
+	<div>
       <div class="logo">
-        <h1>Playing in the House of Games</h1>        
+        <!-- <h1>Playing in the House of Games</h1>     -->    
+        <img src="public/images/houseofgameslogo.jpg">
       </div>
     </div>
 
@@ -19,15 +20,35 @@
     			<div class="panel-heading"><h4><center>Now in Ultimatum Game</center></h4></div>
     			<div class="panel-body">
     				The game begins with you initially being given $100. The game will consist of three rounds. At the beginning of each round, the opposing player will not know how much money you initially have, and you will be asked to make a bet which you will offer to the opposing player. The opposing player will then decide whether to accept this offer or not. If the opposing player accepts this bet, then both players win where you will keep the amount you have remaining and the opposing player will win the amount you have given. If however the opposing player declines the offer, both players lose and receive nothing.
-    			</div>
-    			<div class="col-md-6">
-    				<img src="C:\Uni\2017\ENGR489\Test\public\images\player1.jpg">
-    			</div>
-    			<div class="col-md-6">
-    				<img src="/images/player2.jpg">
-    			</div>
+    			</div>                
     		</div>
-    		<a href="game" class="btn btn-success btn-lg">Begin Game</a>
+
+            <br>
+            <br>
+            <!-- <div class="col-md-6">
+                <img src="public/images/player1.jpg" class="player">
+            </div>
+            <div class="col-md-6">
+                <img src="public/images/player2.jpg" class="player">
+            </div> -->
+            <div>
+                <img src="public/images/round1.jpg" class="player">
+            </div>
+            <br>
+            <br>
+            <form role="form" method="post" action="/login/auth" accept-charset="UTF-8">                    
+                       
+                <label for="fname">Enter Amount Here</label>
+                <input type="number" id="amount" class="form-control" name="amount" placeholder="Amount">   
+
+                <br>
+                <br>                     
+
+                <center><input href="game" type="submit" class="btn btn-success btn-lg m-t-10" id="submitbtn" name="submit" value="Send to other player"></center>                        
+             </form>
+            <br>
+            <br>
+    		<!-- <a href="game" class="btn btn-success btn-lg">Send to other player</a> -->
     	</div>
     </div>
 	
