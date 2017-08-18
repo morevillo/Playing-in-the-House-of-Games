@@ -74,18 +74,6 @@ const config = {
  
 const pool = new Pool(config);
 
-// var client = new pg.Client(process.env.DATABASE_URL);
-// client.connect();
-
-//Connect to database
-// pg.connect(process.env.DATABASE_URL, function(err, result){
-// 	if(err){
-// 		console.error(err);
-// 	}else{
-// 		console.log("Connected to heroku Database");
-// 	}
-// });
-
 //====================Middleware========================//
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
@@ -221,20 +209,7 @@ app.get('/pregame', isLoggedIn, function(req, res){
 });
 
 app.post('/pregame/auth', function(req, res){
-	// // console.log("YOUR USERNAME IS: " + req.user.username);
-	// console.log("BOODY:");
-	// console.log(req.body);
-	// console.log("END");
 	var values = [req.user.username, req.body.privacy_val, req.body.social_media, req.body.freq, req.body.fb_val];
-	// var i = 0;
-	// for(i=0; i < values.length; i++){
-	// 	console.log("VALUES: " + values[i]);
-	// }
-	// console.log("USERNAME: " +  req.user.username);
-	// console.log("PRIVACY: " + req.body.privacy_val);
-	// console.log("SOCIAL MEDIA: " + req.body.social_media);
-	// console.log("FREQ: " + req.body.freq);
-	// console.log("FB_VAL: " + req.body.fb_val);
 
 	pool.query("INSERT INTO pregame (username, priv_val, social_media, freq, tnc) VALUES ($1, $2, $3, $4, $5);", values, function(err, result){
 		if(err){
@@ -243,7 +218,6 @@ app.post('/pregame/auth', function(req, res){
 			console.log("END");
 			return;
 		}
-		// res.redirect('../gameinfo');
 	});
 
 	res.send({redirect: '/gameinfo'});
@@ -255,6 +229,55 @@ app.get('/gameinfo', function(req, res){
 
 app.get('/game', function(req, res){
 	res.render('pages/game');
+});
+
+app.post('/game/auth', function(req, res){
+	var values = [req.user.username, req.body.round1money, req.body.round1status];
+
+	pool.query("INSERT INTO game1 (username, round1money, round1status) VALUES ($1, $2, $3);", values, function(err, result){
+		if(err){
+			console.log("Error inserting items to database in game results");
+			console.log(err);
+			console.log("END");
+			return;
+		}
+	});
+
+	console.log("SUCCESSFULLY ADDED ROW INTO GAME1 TABLE: " + req.user.username + " money: " + req.body.round1money + " stat: " +round1status);
+});
+
+app.get('/round2', function(req, res){
+	res.render('pages/round2');
+});
+
+app.post('/round2/auth', function(req, res){
+	var values = [req.user.username, req.body.lotto, req.body.urns];
+
+	pool.query("INSERT INTO game2 (username, lotto, urns) VALUES ($1, $2, $3);", values, function(err, result){
+		if(err){
+			console.log("Error inserting items to database in pregame questionnaire");
+			console.log(err);
+			console.log("END");
+			return;
+		}
+	});
+});
+
+app.get('/round3', function(req, res){
+	res.render('pages/round3');
+});
+
+app.post('/round3/auth', function(req, res){
+	var values = [req.user.username, req.body.lotto, req.body.urns];
+
+	pool.query("INSERT INTO game3 (username, lotto, urns) VALUES ($1, $2, $3);", values, function(err, result){
+		if(err){
+			console.log("Error inserting items to database in pregame questionnaire");
+			console.log(err);
+			console.log("END");
+			return;
+		}
+	});
 });
 
 app.get('/postgame', isLoggedIn, function(req, res){
