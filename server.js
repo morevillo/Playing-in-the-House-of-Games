@@ -253,9 +253,9 @@ app.get('/round2', function(req, res){
 app.post('/round2/auth', function(req, res){
 	var values = [req.user.username, req.body.lotto, req.body.urns];
 
-	pool.query("INSERT INTO game2 (username, lotto, urns) VALUES ($1, $2, $3);", values, function(err, result){
+	pool.query("INSERT INTO game2 (username, round1money, round1status)  VALUES ($1, $2, $3);", values, function(err, result){
 		if(err){
-			console.log("Error inserting items to database in pregame questionnaire");
+			console.log("Error inserting items to database in game2 results");
 			console.log(err);
 			console.log("END");
 			return;
@@ -278,6 +278,10 @@ app.post('/round3/auth', function(req, res){
 			return;
 		}
 	});
+});
+
+app.get('/summary', function(req, res){
+	res.render('pages/summary');
 });
 
 app.get('/postgame', isLoggedIn, function(req, res){

@@ -97,3 +97,8 @@ text-align: center;
   margin: auto;
   width: 40%;
 }
+
+.panel-body li{
+  padding: 0.5%;
+  text-align: left;
+}
