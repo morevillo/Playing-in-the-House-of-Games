@@ -270,9 +270,9 @@ app.get('/round3', function(req, res){
 app.post('/round3/auth', function(req, res){
 	var values = [req.user.username, req.body.lotto, req.body.urns];
 
-	pool.query("INSERT INTO game3 (username, lotto, urns) VALUES ($1, $2, $3);", values, function(err, result){
+	pool.query("INSERT INTO game3 (username, round1money, round1status) VALUES ($1, $2, $3);", values, function(err, result){
 		if(err){
-			console.log("Error inserting items to database in pregame questionnaire");
+			console.log("Error inserting items to database in round3 of game");
 			console.log(err);
 			console.log("END");
 			return;
@@ -281,7 +281,18 @@ app.post('/round3/auth', function(req, res){
 });
 
 app.get('/summary', function(req, res){
+	// Have query to get info from round1 table to send over to front end to show round 1 results
 	res.render('pages/summary');
+});
+
+app.get('/summary2', function(req, res){
+	// Have query to get info from round1 table to send over to front end to show round 2 results
+	res.render('pages/summary2');
+});
+
+app.get('/summary3', function(req, res){
+	// Have query to get info from round1 table to send over to front end to show overall results
+	res.render('pages/summary3');
 });
 
 app.get('/postgame', isLoggedIn, function(req, res){
@@ -305,7 +316,7 @@ app.post('/postgame/auth', function(req, res){
 		}
 	});
 
-	res.send({redirect: '/gameinfo'});
+	// res.send({redirect: '/gameinfo'});
 });
 
 app.get('/finish', function(req, res){
