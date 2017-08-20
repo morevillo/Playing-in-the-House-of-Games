@@ -23,15 +23,14 @@
             </div>
             <br>
             <br>
-            <form role="form" method="post" action="/login/auth" accept-charset="UTF-8">                    
+            <form>                    
                        
                 <label for="fname">Enter Amount Here</label>
-                <input type="number" id="amount" class="form-control" name="amount" placeholder="Amount">   
+                <input type="number" id="amount" required class="form-control" name="amount" placeholder="Amount">   
 
                 <br>
                 <br>                     
-
-                <center><input href="game" type="submit" class="btn btn-success btn-lg m-t-10" id="submitbtn" name="submit" value="Send to other player"></center>                        
+                <center><button type="button" class="btn btn-primary m-t-10 btn-lg" onclick="submit_data()">Send to other Player</button></center>
              </form>
             <br>
             <br>
@@ -42,6 +41,83 @@
 </body>
 
 <script type="text/javascript">
+
+$(document).ready(function () {
+    // Hide the div
+    $(".customload").hide();
+});
+
+function validate_form(){
+    var amount = $( "#amount" ).val();
+    console.log("AMOUNT IS: " + amount);
+    if(amount == null || amount == undefined || amount == ""){
+        return false;
+    }else{
+        return true;
+    }
+}
+
+function submit_data(){
+
+    var status = calculate_status($( "#amount" ).val());
+    console.log("FINAL STATUS IS: " + status);
+  if(!validate_form()){
+    document.getElementById('error').innerHTML = '<div class="alert alert-danger">Please fill up all fields</div>';      
+    return;
+  }else{
+    post_data(status);
+    $("#error").hide();
+    look_player();
+  }
+}
+
+function post_data(status){
+    $.ajax({
+      type: 'POST',
+      url: '/round3/auth',
+      data: JSON.stringify({
+        round1money: $( "#amount" ).val(),
+        round1status: status
+      }), 
+      contentType: "application/json",
+      dataType: "json",
+      success: function(){
+        window.location.replace("/summary3");
+        console.log("DONE");
+      },
+      error: function(){
+        console.log("Error posting data in game3");
+      }
+    });
+}
+
+function look_player(){
+    var max = 10000;
+    var min = 6000;
+    console.log("I GOT CLICKED");
+    $(".about").hide();
+    $(".customload").show();
+
+    var temp = Math.floor(Math.random()*(max-min+1)+min);
+
+    // var temp = Math.floor((Math.random() * 5000) + 2000);
+    console.log("ROUND 3 WAITING TIME: " + temp);
+
+    setTimeout(function(){
+        window.location.href = 'round2'; 
+    }, temp);
+}
+
+function calculate_status(amount){
+    var status = Math.floor((Math.random() * 100) + 1);
+    console.log("STATUS IS: " + status);
+    if(status<=90){
+        return 'W';
+    }else{
+        return 'L';
+    }
+}
+
 
 </script>
 
