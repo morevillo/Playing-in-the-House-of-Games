@@ -55,8 +55,9 @@
                         </select>
                         
                         <label for="password">Password</label>
-                        <input type="password" id="password" onchange="validatePassword()" required class="form-control" name="password" placeholder="">
-                        
+                        <!-- <input type="password" id="password" onchange="validatePassword()" required class="form-control" name="password" placeholder=""> -->
+                        <input type="password" id="password" pattern=".{6,}" title="Passwords should be more than six characters" required class="form-control" name="password" placeholder="">
+
                         <center><input type="submit" class="btn btn-primary m-t-10" id="submitbtn" name="submit" value="Submit"></center> 
 
                         <br>
@@ -86,26 +87,33 @@
 		type: "GET"
 	}).then();
 
-    window.onload = function () {
-        document.getElementById("password").onchange = validatePassword;
-    }
+    // window.onload = function () {
+    //     document.getElementById("password").onchange = validatePassword;
+    // }
 
-    function validatePassword(){
-        var pw=document.getElementById("password").value;
-        if(pw.length < 6) {
-            document.getElementById("password").setCustomValidity("Passwords Should contain mroe than six characters");
-            return false;
-        }
-        else if(pw.length == 0){
-            document.getElementById("confirm_password").setCustomValidity('Please fill in this field');
-            return false;
-        }else{
-        	document.getElementById("confirm_password").setCustomValidity('');
-        }
-    }
+    // function validatePassword(){
+    //     var pw= $('#password').val();
+    //     if(pw.length < 6) {
+    //         console.log("PW IS LESS THAN 6")
+    //         document.getElementById("password").setCustomValidity("Passwords Should contain more than six characters");
+    //         return false;
+    //     }
+    //     else if(pw.length == 0){
+    //         document.getElementById("confirm_password").setCustomValidity('Please fill in this field');
+    //         return false;
+    //     }else{
+    //         console.log("SUCCESS");
+    //     	return true;
+    //     }        
+    // }
 
 	$('#submitbtn').on('click', function(e){
+        // if(!validatePassword()){
+        //     console.log("FALSE");
+        //     return;
+        // }
 		//e.preventDefault()
+        console.log("SECOND");
 		$.ajax({
 			type: 'POST',
 			url: '/register/auth',

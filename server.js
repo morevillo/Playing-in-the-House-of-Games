@@ -186,7 +186,7 @@ app.get('/', function(req, res) {
     // res.render('index.html');
 
     res.render('pages/home',{
-    	message: req.flash('error')
+    	message: req.flash('unauthorized')
     });
 });
 
@@ -358,7 +358,7 @@ app.post('/postgame/auth', function(req, res){
 		}
 	});
 
-	// res.send({redirect: '/gameinfo'});
+	res.send({redirect: '/finish'});
 });
 
 app.get('/finish', function(req, res){
@@ -390,7 +390,6 @@ function isLoggedIn(req, res, next) {
     	return next();
     }
     // if they aren't redirect them to the home page
-    req.flash('error', 'You do not have permission to access this content. Please login or sign up first!');
+    req.flash('unauthorized', 'You do not have permission to access this content. Please login or sign up first!');
     res.redirect('/');
-    // res.render('pages/home')
 }
