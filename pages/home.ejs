@@ -10,6 +10,10 @@
     <div class="container">      
       
       <div class="about">
+
+        <% if (message.length > 0) { %>
+          <div class="alert alert-danger"><%= message %></div>
+        <% } %> 
       
       <p>Thank you for participating in the study! Social Media has rapidly evolved and has now become a major part of our everyday lives. Not a day goes by without us looking through our Facebook accounts even just once. This study aims to find out how much people really know about social media and how it works.</p>
 
@@ -45,7 +49,6 @@
     <% } else{%>            
       <a href="disclaimer" class="btn btn-success btn-lg">Begin Experiment</a>
     <% } %>     
-
 		
       </div>
 
@@ -59,7 +62,7 @@
 </body>
 
 <script type="text/javascript">
-document.getElementById("p1").innerHTML = "New text!";
+// document.getElementById("p1").innerHTML = "New text!";
 </script>
 
 </html>

@@ -184,7 +184,10 @@ passport.use('local-signup', new LocalStrategy({
 app.get('/', function(req, res) {
     //res.sendFile(path.join(__dirname + '/public/index.html'));
     // res.render('index.html');
-    res.render('pages/home');
+
+    res.render('pages/home',{
+    	message: req.flash('error')
+    });
 });
 
 app.get('/register', function(req, res){
@@ -223,11 +226,11 @@ app.post('/pregame/auth', function(req, res){
 	res.send({redirect: '/gameinfo'});
 });
 
-app.get('/gameinfo', function(req, res){
+app.get('/gameinfo', isLoggedIn, function(req, res){
 	res.render('pages/gameinfo');
 });
 
-app.get('/game', function(req, res){
+app.get('/game', isLoggedIn, function(req, res){
 	res.render('pages/game');
 });
 
@@ -246,7 +249,7 @@ app.post('/game/auth', function(req, res){
 	console.log("SUCCESSFULLY ADDED ROW INTO GAME1 TABLE: " + req.user.username + " money: " + req.body.round1money + " stat: " +round1status);
 });
 
-app.get('/round2', function(req, res){
+app.get('/round2', isLoggedIn, function(req, res){
 	res.render('pages/round2');
 });
 
@@ -263,7 +266,7 @@ app.post('/round2/auth', function(req, res){
 	});
 });
 
-app.get('/round3', function(req, res){
+app.get('/round3', isLoggedIn, function(req, res){
 	res.render('pages/round3');
 });
 
@@ -280,7 +283,7 @@ app.post('/round3/auth', function(req, res){
 	});
 });
 
-app.get('/summary', function(req, res){
+app.get('/summary', isLoggedIn, function(req, res){
 	// Have query to get info from round1 table to send over to front end to show round 1 results
 	var result = {};
 	var value = [req.user.username];
@@ -296,7 +299,7 @@ app.get('/summary', function(req, res){
   });
 });
 
-app.get('/summary2', function(req, res){
+app.get('/summary2', isLoggedIn, function(req, res){
 	// Have query to get info from round1 table to send over to front end to show round 2 results
 	var result = {};
 	var value = [req.user.username];
@@ -312,7 +315,7 @@ app.get('/summary2', function(req, res){
   });
 });
 
-app.get('/summary3', function(req, res){
+app.get('/summary3', isLoggedIn, function(req, res){
 	// Have query to get info from round1 table to send over to front end to show overall results
 	var result = {};
 	var value = [req.user.username];
@@ -387,5 +390,7 @@ function isLoggedIn(req, res, next) {
     	return next();
     }
     // if they aren't redirect them to the home page
+    req.flash('error', 'You do not have permission to access this content. Please login or sign up first!');
     res.redirect('/');
+    // res.render('pages/home')
 }
