@@ -76,8 +76,8 @@ function post_data(status){
       type: 'POST',
       url: '/round3/auth',
       data: JSON.stringify({
-        round1money: $( "#amount" ).val(),
-        round1status: status
+        round3money: $( "#amount" ).val(),
+        round3status: status
       }), 
       contentType: "application/json",
       dataType: "json",
@@ -104,7 +104,7 @@ function look_player(){
     console.log("ROUND 3 WAITING TIME: " + temp);
 
     setTimeout(function(){
-        window.location.href = 'round2'; 
+        window.location.href = 'summary3'; 
     }, temp);
 }
 

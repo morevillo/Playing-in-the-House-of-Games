@@ -9,7 +9,7 @@
 
     <div class="container">
     	<div class="about">
-    		<div class="panel panel-info">
+    		<!-- <div class="panel panel-info">
     			<div class="panel-heading"><h4><center>Now in Round1 Summary Page</center></h4></div>
     			<div class="panel-body">
     				The game begins with you initially being given $100. The game will consist of <b>three</b> rounds. 
@@ -21,7 +21,24 @@
 
                     <li>If however the opposing player declines the offer, both players lose and receive nothing.</li>
     			</div>                
-    		</div>
+            </div> -->
+
+            <% if(result.results.status == "W"){ %>
+            <div class="panel panel-success">
+                <div class="panel-heading"><h4><center>Congratulations! You won the first round!</center></h4></div>
+                <div class="panel-body">
+                    <li>Congratulations! Your opponent accepted your offer of $<%= result.results.money %></li>
+                    <li>You have won $<%= 100 - result.results.money %></li>
+                </div>                
+            </div>
+            <% } else{  %>
+                <div class="panel panel-danger">
+                <div class="panel-heading"><h4><center>You Lost </center></h4></div>
+                <div class="panel-body">
+                    <li>Unfortunately, your opponent did not accept your offer of <%= result.results.money %>. Maybe try increasing the price</li>
+                </div>                
+            </div>
+            <% } %>
             <br>
             <br>
             

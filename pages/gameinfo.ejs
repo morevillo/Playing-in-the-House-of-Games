@@ -11,14 +11,14 @@
 
     	<div class="customload">
       		<div class="loader"></div>
-      		<p>Looking for another player....</p>
+      		<p>Connecting you to anonuser <%= Math.floor((Math.random() * 5000) + 2000) %></p>
     	</div>
 
     	<div class="about">
     		<div class="panel panel-info">
     			<div class="panel-heading"><h4><center>Game Overview</center></h4></div>
     			<div class="panel-body">
-    				The game begins with you initially being given $100. The game will consist of <b>three</b> rounds. 
+    				The game begins with you initially being given an $N amount of money, where your opponent will not know the amount that you have. The game will consist of <b>three</b> rounds. 
 
             <li>At the beginning of each round, the opposing player will not know how much money you initially have, and you will be asked to make a bet which you will offer to the opposing player.</li> 
             
@@ -27,6 +27,8 @@
             <li>If the opposing player accepts this bet, then both players win where you will keep the amount you have remaining and the opposing player will win the amount you have given.</li> 
 
             <li>If however the opposing player declines the offer, both players lose and receive nothing.</li>
+
+            <li>To keep the game fair and that no bias will be made, usernames of the players you are playing against will be kept anonymous</li>
     			</div>    			
     		</div>
 
@@ -70,7 +72,7 @@
 		console.log("I GOT CLICKED");
 		$(".about").hide();
         $(".customload").show();
-        var temp = Math.floor((Math.random() * 5000) + 2000);
+        var temp = Math.floor((Math.random() * 7000) + 3000);
         console.log("TEMP IS: " + temp);
 
         setTimeout(function(){

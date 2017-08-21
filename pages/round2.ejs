@@ -8,6 +8,14 @@
 	<% include ../partials/header %>
 
     <div class="container">
+
+        <div id="error"></div>
+
+        <div class="customload">
+            <div class="loader"></div>
+            <p>Waiting for your opponent to make decision... %></p>
+        </div>
+
     	<div class="about">
     		<div class="panel panel-info">
     			<div class="panel-heading"><h4><center>Now in second round of Ultimatum Game</center></h4></div>
@@ -34,7 +42,6 @@
              </form>
             <br>
             <br>
-    		<!-- <a href="game" class="btn btn-success btn-lg">Send to other player</a> -->
     	</div>
     </div>
 	
@@ -76,8 +83,8 @@ function post_data(status){
       type: 'POST',
       url: '/round2/auth',
       data: JSON.stringify({
-        round1money: $( "#amount" ).val(),
-        round1status: status
+        round2money: $( "#amount" ).val(),
+        round2status: status
       }), 
       contentType: "application/json",
       dataType: "json",
@@ -86,7 +93,7 @@ function post_data(status){
         console.log("DONE");
       },
       error: function(){
-        console.log("Error posting data in game1");
+        console.log("Error posting data in game2");
       }
     });
 }
@@ -104,14 +111,14 @@ function look_player(){
     console.log("ROUND 2 WAITING TIME: " + temp);
 
     setTimeout(function(){
-        window.location.href = 'round2'; 
+        window.location.href = 'summary2'; 
     }, temp);
 }
 
 function calculate_status(amount){
     var status = Math.floor((Math.random() * 100) + 1);
     console.log("STATUS IS: " + status);
-    if(status<=90){
+    if(status<=50){
         return 'W';
     }else{
         return 'L';

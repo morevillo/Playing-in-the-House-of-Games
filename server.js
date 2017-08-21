@@ -42,7 +42,7 @@ app.use(passport.session());
 
 app.use(function(req, res, next){
     if(req.user){
-    	console.log("USERNAME JSON: " + JSON.stringify(req.user));
+    	// console.log("USERNAME JSON: " + JSON.stringify(req.user));
         res.locals.username = req.user.username;
         res.locals.isLoggedIn = true;
     } else {
@@ -251,9 +251,9 @@ app.get('/round2', function(req, res){
 });
 
 app.post('/round2/auth', function(req, res){
-	var values = [req.user.username, req.body.lotto, req.body.urns];
+	var values = [req.user.username, req.body.round2money, req.body.round2status];
 
-	pool.query("INSERT INTO game2 (username, round1money, round1status)  VALUES ($1, $2, $3);", values, function(err, result){
+	pool.query("INSERT INTO game2 (username, round2money, round2status)  VALUES ($1, $2, $3);", values, function(err, result){
 		if(err){
 			console.log("Error inserting items to database in game2 results");
 			console.log(err);
@@ -268,9 +268,9 @@ app.get('/round3', function(req, res){
 });
 
 app.post('/round3/auth', function(req, res){
-	var values = [req.user.username, req.body.lotto, req.body.urns];
+	var values = [req.user.username, req.body.round3money, req.body.round3status];
 
-	pool.query("INSERT INTO game3 (username, round1money, round1status) VALUES ($1, $2, $3);", values, function(err, result){
+	pool.query("INSERT INTO game3 (username, round3money, round3status) VALUES ($1, $2, $3);", values, function(err, result){
 		if(err){
 			console.log("Error inserting items to database in round3 of game");
 			console.log(err);
@@ -282,17 +282,56 @@ app.post('/round3/auth', function(req, res){
 
 app.get('/summary', function(req, res){
 	// Have query to get info from round1 table to send over to front end to show round 1 results
-	res.render('pages/summary');
+	var result = {};
+	var value = [req.user.username];
+  	pool.query('SELECT round1status, round1money FROM game1 WHERE username=$1', value, function(err, rows, fields){
+    if(err){
+      next(err);
+      return;
+    }
+    result.results = {status:rows.rows[0].round1status,
+    	money: rows.rows[0].round1money};
+    console.log("RESULT FOR SUMMARY IS: " + result.results);
+    res.render('pages/summary', {result:result});
+  });
 });
 
 app.get('/summary2', function(req, res){
 	// Have query to get info from round1 table to send over to front end to show round 2 results
-	res.render('pages/summary2');
+	var result = {};
+	var value = [req.user.username];
+  	pool.query('SELECT round2status, round2money FROM game2 WHERE username=$1', value, function(err, rows, fields){
+    if(err){
+      next(err);
+      return;
+    }
+    result.results = {status:rows.rows[0].round2status,
+    	money: rows.rows[0].round2money};
+    console.log("RESULT FOR SUMMARY IS: " + result.results);
+    res.render('pages/summary2', {result:result});
+  });
 });
 
 app.get('/summary3', function(req, res){
 	// Have query to get info from round1 table to send over to front end to show overall results
-	res.render('pages/summary3');
+	var result = {};
+	var value = [req.user.username];
+  	pool.query('SELECT * FROM game1 NATURAL JOIN game2 NATURAL JOIN game3 WHERE username=$1', value, function(err, rows, fields){
+    if(err){
+      next(err);
+      return;
+    }
+    result.results = {
+    	status1: rows.rows[0].round1status,
+    	status2: rows.rows[0].round2status,
+    	status3:rows.rows[0].round3status,
+    	money1: rows.rows[0].round1money,
+    	money2: rows.rows[0].round2money,
+    	money3: rows.rows[0].round3money
+    };
+    console.log("RESULT FOR SUMMARY IS: " + result.results);
+    res.render('pages/summary3', {result:result});
+  });
 });
 
 app.get('/postgame', isLoggedIn, function(req, res){
