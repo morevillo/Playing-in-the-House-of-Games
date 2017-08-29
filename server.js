@@ -230,8 +230,34 @@ app.get('/gameinfo', isLoggedIn, function(req, res){
 	res.render('pages/gameinfo');
 });
 
+app.post('/gameinfo/auth', function(req, res){
+	var values = [req.body.opponent, req.user.username];
+
+	pool.query("UPDATE users SET opponent=$1 WHERE username=$2;", values, function(err, result){
+		if(err){
+			console.log("Error inserting opponent to users");
+			console.log(err);
+			console.log("END");
+			return;
+		}
+	});
+
+	console.log("SUCCESSFULLY ADDED OPPONENT INTO USERS TABLE: " + req.user.username + " opponent: " + req.body.opponent);
+});
+
 app.get('/game', isLoggedIn, function(req, res){
-	res.render('pages/game');
+	// res.render('pages/game');
+	var result = {};
+	var value = [req.user.username];
+	pool.query('SELECT opponent FROM users WHERE username=$1', value, function(err, rows, fields){
+    if(err){
+      next(err);
+      return;
+    }
+    result.results = {opponent:rows.rows[0].opponent};
+    console.log("RESULT FOR SUMMARY IS: " + result.results);
+    res.render('pages/game', {result:result});
+  });
 });
 
 app.post('/game/auth', function(req, res){
@@ -250,7 +276,18 @@ app.post('/game/auth', function(req, res){
 });
 
 app.get('/round2', isLoggedIn, function(req, res){
-	res.render('pages/round2');
+	// res.render('pages/round2');
+	var result = {};
+	var value = [req.user.username];
+	pool.query('SELECT opponent FROM users WHERE username=$1', value, function(err, rows, fields){
+    if(err){
+      next(err);
+      return;
+    }
+    result.results = {opponent:rows.rows[0].opponent};
+    console.log("RESULT FOR SUMMARY IS: " + result.results);
+    res.render('pages/round2', {result:result});
+  });
 });
 
 app.post('/round2/auth', function(req, res){
@@ -267,7 +304,18 @@ app.post('/round2/auth', function(req, res){
 });
 
 app.get('/round3', isLoggedIn, function(req, res){
-	res.render('pages/round3');
+	// res.render('pages/round3');
+	var result = {};
+	var value = [req.user.username];
+	pool.query('SELECT opponent FROM users WHERE username=$1', value, function(err, rows, fields){
+    if(err){
+      next(err);
+      return;
+    }
+    result.results = {opponent:rows.rows[0].opponent};
+    console.log("RESULT FOR SUMMARY IS: " + result.results);
+    res.render('pages/round3', {result:result});
+  });
 });
 
 app.post('/round3/auth', function(req, res){

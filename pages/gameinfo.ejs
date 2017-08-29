@@ -11,7 +11,7 @@
 
     	<div class="customload">
       		<div class="loader"></div>
-      		<p>Connecting you to anonuser <%= Math.floor((Math.random() * 5000) + 2000) %></p>
+      		<p>Looking for an opponent...</p>
     	</div>
 
     	<div class="about">
@@ -69,6 +69,7 @@
     });
 
 	$('#begin').on('click', function(e){
+        getOpponent();
 		console.log("I GOT CLICKED");
 		$(".about").hide();
         $(".customload").show();
@@ -79,6 +80,27 @@
         	window.location.href = 'game'; 
      	}, temp);
 	});
+
+    function getOpponent(){
+        var opponent = "anonuser" +  Math.floor((Math.random() * 5000) + 2000);  
+
+        $.ajax({
+          type: 'POST',
+          url: '/gameinfo/auth',
+          data: JSON.stringify({ 
+            opponent: opponent  
+          }), 
+          contentType: "application/json",
+          dataType: "json",
+          success: function(){
+            // continue;
+            console.log("DONE");
+          },
+          error: function(){
+            console.log("Error adding opponent");
+          }
+        });
+    }
 
 
 	// setTimeout(function(){
