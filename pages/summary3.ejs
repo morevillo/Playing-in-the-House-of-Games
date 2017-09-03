@@ -35,7 +35,7 @@
                         <ul>
                             <% if(result.results.status1 == "W"){%>
                                 <li><%= result.results.opponent %> accepted your offer of $<%=result.results.money3 %>.</li>
-                                <li>You won $<%= result.results.money1 %>!!</li>
+                                <li>You won $<%= 100 - result.results.money1 %>!!</li>
                             <% } else{ %>
                                 <li><%= result.results.opponent %> did not accept your offer of $<%=result.results.money3 %>.</li>
                             <% } %>
@@ -46,7 +46,7 @@
                         <ul>
                             <% if(result.results.status2 == "W"){%>
                                 <li><%= result.results.opponent %> accepted your offer of $<%=result.results.money2 %>.</li>
-                                <li>You won $<%= result.results.money2 %>!!</li>
+                                <li>You won $<%= 100 - result.results.money2 %>!!</li>
                             <% } else{ %>
                                 <li><%= result.results.opponent %> did not accept your offer of $<%=result.results.money2 %>.</li>
                             <% } %>
@@ -57,7 +57,7 @@
                         <ul>
                             <% if(result.results.status3 == "W"){%>
                                 <li><%= result.results.opponent %> accepted your offer of $<%=result.results.money3 %>.</li>
-                                <li>You won $<%= result.results.money3 %>!!</li>
+                                <li>You won $<%= 100 - result.results.money3 %>!!</li>
                             <% } else{ %>
                                 <li><%= result.results.opponent %> did not accept your offer of $<%=result.results.money3 %>.</li>
                             <% } %>
