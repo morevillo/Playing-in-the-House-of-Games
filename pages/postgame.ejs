@@ -19,13 +19,22 @@
             <input type="number" required class="form-control" id="lotto"></input>
           </div>
 
-          <br>
+          <hr>
 
-          <div class="radio_1">
+          <div>
             <label for="radio_1">There are two urns, one containing 100 red and black marbles at an unknown ratio, and the second having an exact 50-50 ratio of red and black marbles. If you were to bet $100 on drawing either a red or black marble, which urn would you bet on?</label>
             <br>
             <label class="radio-inline"><input required type="radio" name="opturn" value="unknown">Unknown Ratio</label>
             <label class="radio-inline"><input type="radio" name="opturn" value="50-50">50-50 Ratio</label>
+          </div>
+
+          <hr>
+
+          <div>
+            <label for="radio_1">While playing the game, did you think you were facing a real person?</label>
+            <br>
+            <label class="radio-inline"><input required type="radio" name="optreal" value="yes">Yes</label>
+            <label class="radio-inline"><input type="radio" name="optreal" value="No">No</label>
           </div>
 
           <br>
@@ -55,6 +64,10 @@ function validate_form(){
   if(urn == null){
     return false;
   }
+  var real = $('input[name="optreal"]:checked').val();
+  if(urn == null){
+    return false;
+  }
   return true;
 }
 
@@ -70,7 +83,8 @@ function submit_data(){
       url: '/postgame/auth',
       data: JSON.stringify({
         lotto: $( "#lotto" ).val(),
-        urn: $('input[name="opturn"]:checked').val()        
+        urn: $('input[name="opturn"]:checked').val(),
+        real_person: $('input[name="optreal"]:checked').val()    
       }), 
       contentType: "application/json",
       dataType: "json",

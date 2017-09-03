@@ -24,25 +24,51 @@
                 <% total += 100 - result.results.money3 %>
             <% } %>
 
-    		<% if(result.results.status3 == "W"){ %>
-            <div class="panel panel-success">
-                <div class="panel-heading"><h4><center>Congratulations! You won the final round!</center></h4></div>
+    		
+
+            <div class="panel panel-info">
+                <div class="panel-heading"><h4><center>Game Summary</center></h4></div>
                 <div class="panel-body">
-                    <li>Congratulations! Your opponent accepted your offer of $<%= result.results.money3 %></li>
-                    <li>You have won $<%= 100 - result.results.money3 %></li>
-                </div>                
+
+                    You have now finished the game!! Here are your summary statistics on how well you did:
+                    <li><b>Round 1 Summary:</b>
+                        <ul>
+                            <% if(result.results.status1 == "W"){%>
+                                <li><%= result.results.opponent %> accepted your offer of $<%=result.results.money3 %>.</li>
+                                <li>You won $<%= result.results.money1 %>!!</li>
+                            <% } else{ %>
+                                <li><%= result.results.opponent %> did not accept your offer of $<%=result.results.money3 %>.</li>
+                            <% } %>
+                        </ul>
+                    </li> 
+                    <hr>
+                    <li><b>Round 2 Summary:</b>
+                        <ul>
+                            <% if(result.results.status2 == "W"){%>
+                                <li><%= result.results.opponent %> accepted your offer of $<%=result.results.money2 %>.</li>
+                                <li>You won $<%= result.results.money2 %>!!</li>
+                            <% } else{ %>
+                                <li><%= result.results.opponent %> did not accept your offer of $<%=result.results.money2 %>.</li>
+                            <% } %>
+                        </ul>
+                    </li>   
+                    <hr>
+                    <li><b>Round 3 Summary:</b>
+                        <ul>
+                            <% if(result.results.status3 == "W"){%>
+                                <li><%= result.results.opponent %> accepted your offer of $<%=result.results.money3 %>.</li>
+                                <li>You won $<%= result.results.money3 %>!!</li>
+                            <% } else{ %>
+                                <li><%= result.results.opponent %> did not accept your offer of $<%=result.results.money3 %>.</li>
+                            <% } %>
+                        </ul>
+                    </li>                 
+
+                    <hr> 
+                    
+                    <center><h1>Total Winnings After 3 Rounds: $<%=total%></h1></center>
+                </div>
             </div>
-            <% } else{  %>
-                <div class="panel panel-danger">
-                <div class="panel-heading"><h4><center>You Lost the final round </center></h4></div>
-                <div class="panel-body">
-                    <li>Unfortunately, your opponent did not accept your offer of $<%= result.results.money3 %>.</li>
-                </div>                
-            </div>
-            <% } %>
-            <center><h1>Total Winnings After 3 Rounds: $<%=total%></h1></center>
-            <br>
-            <br>
             
             <br>
             <br>

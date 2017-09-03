@@ -367,12 +367,13 @@ app.get('/summary3', isLoggedIn, function(req, res){
 	// Have query to get info from round1 table to send over to front end to show overall results
 	var result = {};
 	var value = [req.user.username];
-  	pool.query('SELECT * FROM game1 NATURAL JOIN game2 NATURAL JOIN game3 WHERE username=$1', value, function(err, rows, fields){
+  	pool.query('SELECT * FROM users NATURAL JOIN game1 NATURAL JOIN game2 NATURAL JOIN game3 WHERE username=$1', value, function(err, rows, fields){
     if(err){
       next(err);
       return;
     }
     result.results = {
+    	opponent: rows.rows[0].opponent,
     	status1: rows.rows[0].round1status,
     	status2: rows.rows[0].round2status,
     	status3:rows.rows[0].round3status,
@@ -399,7 +400,7 @@ app.post('/postgame/auth', function(req, res){
 		console.log("VALUES: " + values[i]);
 	}
 
-	pool.query("INSERT INTO postgame (username, lotto, urn) VALUES ($1, $2, $3);", values, function(err, result){
+	pool.query("INSERT INTO postgame (username, lotto, urn, real_person) VALUES ($1, $2, $3, $4);", values, function(err, result){
 		if(err){
 			console.log("Error inserting items to database in pregame questionnaire");
 			return;
