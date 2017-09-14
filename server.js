@@ -3,6 +3,10 @@ var app = express();
 var port = process.env.PORT || 8080;
 var path = require('path');
 //var cors = require('cors');
+var bcrypt = require('bcrypt-nodejs');
+// var hash = bcrypt.hashSync(configAuth.bcryptHash.Hash);
+
+var configAuth = require('./config/auth');
 
 //Passport
 var passport = require('passport');
@@ -12,13 +16,14 @@ var LocalStrategy   = require('passport-local').Strategy;
 //Session
 var session = require('express-session');
 app.use(session({
-	secret: 'houseofgamessecret',
+	// secret: 'houseofgamessecret',
+	secret: configAuth.sessionSecret.secret,
 	saveUninitialized: true,
 	resave: true,
 	cookie: {
 		path: '/',
 		httpOnly: false,
-		maxAge: 900000 //15 minute Timeout
+		maxAge: 1800000 //30 minute Timeout
 	}
 }));
 
@@ -121,7 +126,7 @@ passport.use('local-login', new LocalStrategy({
             return done(null, false, req.flash('loginMessage', 'Incorrect username/password'));
         }
         //Check password, TODO: use brcypt
-        if(password!=result.rows[0].password){
+        if(!bcrypt.compareSync(password, result.rows[0].password)){
         	console.log("Wrong password");
         	return done(null, false, req.flash('loginMessage', 'Incorrect username/password'));
         }
@@ -130,9 +135,6 @@ passport.use('local-login', new LocalStrategy({
 			return done(null, result.rows[0]);
 		}
 	});
-	//Query for login will be here
-	//var user = client.query("SELECT * FROM [] WHERE username = '" + username + "';", callback);
-	//brcypt stuff Callback function
 
 }));
 
@@ -158,11 +160,12 @@ passport.use('local-signup', new LocalStrategy({
 					} else {
 						var user = {
 							username: username,
-							password: password
+							// password: password
+							password: bcrypt.hashSync(password, null, null)
 						};
 
 						console.log("Doesn't exist");
-						var values = [req.body.fname, req.body.lname, username, req.body.email, req.body.gender, req.body.age, req.body.ethnicity, req.body.password];
+						var values = [req.body.fname, req.body.lname, user.username, req.body.email, req.body.gender, req.body.age, req.body.ethnicity, user.password];
 						pool.query("INSERT INTO users (fname, lname, username, email, gender, age, ethnicity, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", values, function(err, result){
 							//client.release();
 							if(err){
