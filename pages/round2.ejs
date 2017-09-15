@@ -20,11 +20,11 @@
     		<div class="panel panel-info">
     			<div class="panel-heading"><h4><center>Second Round</center></h4></div>
     			<div class="panel-body">
-    				<li>For this round, you are given $100 to use at your disposal for you to make a bet which will be offered to <%= result.results.opponent %>. </li>
+    				<li>For this round, you are given $100 to use at your disposal for you to make an offer which will be offered to <%= result.results.opponent %>. </li>
 
-                    <li>Your opposing player will then decide whether to accept this offer or not where if he/she does, then both players win and receive their corresponding winnings.</li>
+                    <li>Your opposing player will then decide whether to accept this offer or not where if he/she does, then both players win, where you keep the money you have left .</li>
 
-                    <li>If however he/she declines the offer, then both players lose and receive nothing.</li>
+                    <li>If however he/she declines the offer, then both players lose, where you lose all the money you got for the round</li>
     			</div>                
     		</div>
 
@@ -122,6 +122,9 @@ function look_player(){
 function calculate_status(amount){
     var status = Math.floor((Math.random() * 100) + 1);
     console.log("STATUS IS: " + status);
+    if(amount == 0){
+        return 'L';
+    }
     if(status<=50){
         return 'W';
     }else{

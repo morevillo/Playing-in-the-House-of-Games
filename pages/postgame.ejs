@@ -37,6 +37,30 @@
             <label class="radio-inline"><input type="radio" name="optreal" value="No">No</label>
           </div>
 
+          <hr>
+
+          <div>
+            <label for="radio_1">I believe that Facebook will not use my personal information for any purposes other than what it has been provided for.</label>
+            <br>
+            <label class="radio-inline"><input required type="radio" name="optpurp" value="SD">Strongly Disagree</label>
+            <label class="radio-inline"><input type="radio" name="optpurp" value="D">Disagree</label>
+            <label class="radio-inline"><input type="radio" name="optpurp" value="NAD">Neither Agree or Disagree</label>
+            <label class="radio-inline"><input type="radio" name="optpurp" value="A">Agree</label>
+            <label class="radio-inline"><input type="radio" name="optpurp" value="SA">Strongly Agree</label>
+          </div>
+
+          <hr>
+
+          <div>
+            <label for="radio_1">I am concerned that my information on Facebook will be accessed and used by third parties (eg: applications, games or websites that Facebook shares with).</label>
+            <br>
+            <label class="radio-inline"><input required type="radio" name="optconcern" value="SD">Strongly Disagree</label>
+            <label class="radio-inline"><input type="radio" name="optconcern" value="D">Disagree</label>
+            <label class="radio-inline"><input type="radio" name="optconcern" value="NAD">Neither Agree or Disagree</label>
+            <label class="radio-inline"><input type="radio" name="optconcern" value="A">Agree</label>
+            <label class="radio-inline"><input type="radio" name="optconcern" value="SA">Strongly Agree</label>
+          </div>
+
           <br>
           <br>
           
@@ -47,7 +71,7 @@
       <hr>
 
       <footer>
-        <p>&copy; 2016 Company, Inc.</p>
+        <p></p>
       </footer>
     </div> <!-- /container -->
 	
@@ -68,6 +92,14 @@ function validate_form(){
   if(urn == null){
     return false;
   }
+  var purp = $('input[name="optpurp"]:checked').val();
+  if(purp == null){
+    return false;
+  }
+  var concern = $('input[name="optconcern"]:checked').val();
+  if(concern == null){
+    return false;
+  }
   return true;
 }
 
@@ -84,7 +116,9 @@ function submit_data(){
       data: JSON.stringify({
         lotto: $( "#lotto" ).val(),
         urn: $('input[name="opturn"]:checked').val(),
-        real_person: $('input[name="optreal"]:checked').val()    
+        real_person: $('input[name="optreal"]:checked').val(),
+        purpose: $('input[name="optpurp"]:checked').val(),
+        concern: $('input[name="optconcern"]:checked').val()
       }), 
       contentType: "application/json",
       dataType: "json",
@@ -97,26 +131,6 @@ function submit_data(){
       }
     });
 }
-
-// $('#submitbtn').on('click', function(e){
-//     //e.preventDefault()
-//     $.ajax({
-//       type: 'POST',
-//       url: '/postgame/auth',
-//       data: JSON.stringify({
-//         lotto: $( "#lotto" ).val(),
-//         urn: $('input[name="opturn"]:checked').val()        
-//       }), 
-//       contentType: "application/json",
-//       dataType: "json",
-//       success: function(){
-//         window.location.replace(ip + "/finish");
-//       },
-//       error: function(){
-
-//       }
-//     });
-//   });
 
 </script>
 

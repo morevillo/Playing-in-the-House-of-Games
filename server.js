@@ -397,13 +397,13 @@ app.get('/postgame', isLoggedIn, function(req, res){
 
 app.post('/postgame/auth', function(req, res){
 	console.log("YOUR USERNAME IS: " + req.user.username);
-	var values = [req.user.username, req.body.lotto, req.body.urn];
+	var values = [req.user.username, req.body.lotto, req.body.urn, req.body.real_person, req.body.purpose, req.body.concern];
 	var i = 0;
 	for(i=0; i < values.length; i++){
 		console.log("VALUES: " + values[i]);
 	}
 
-	pool.query("INSERT INTO postgame (username, lotto, urn, real_person) VALUES ($1, $2, $3, $4);", values, function(err, result){
+	pool.query("INSERT INTO postgame (username, lotto, urn, real_person, purpose, concern) VALUES ($1, $2, $3, $4, $5, $6);", values, function(err, result){
 		if(err){
 			console.log("Error inserting items to database in pregame questionnaire");
 			return;
