@@ -54,12 +54,7 @@ var ERROR_LOG = console.error.bind(console);
 		type: "GET"
 	}).then();
 
-	// function verify(pw){
-
-	// }
-
 	$('#submitbtn').on('click', function(e){
-		//e.preventDefault()
 		$.ajax({
 			type: 'POST',
 			url: '/login/auth',
