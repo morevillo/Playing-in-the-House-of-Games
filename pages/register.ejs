@@ -68,52 +68,21 @@
             </div>
         </div>
     </div>
+
+    <hr>
     </div>
-
-      <hr>
-
-      <footer>
-        <p></p>
-      </footer>
-    </div> <!-- /container -->
 </body>
 
 <script type="text/javascript">
 	var ERROR_LOG = console.error.bind(console);
-	//var ip = "https://rugged-capitol-reef-56094.herokuapp.com";
 
 	$.ajax({
 		url: '/register',
 		type: "GET"
 	}).then();
 
-    // window.onload = function () {
-    //     document.getElementById("password").onchange = validatePassword;
-    // }
-
-    // function validatePassword(){
-    //     var pw= $('#password').val();
-    //     if(pw.length < 6) {
-    //         console.log("PW IS LESS THAN 6")
-    //         document.getElementById("password").setCustomValidity("Passwords Should contain more than six characters");
-    //         return false;
-    //     }
-    //     else if(pw.length == 0){
-    //         document.getElementById("confirm_password").setCustomValidity('Please fill in this field');
-    //         return false;
-    //     }else{
-    //         console.log("SUCCESS");
-    //     	return true;
-    //     }        
-    // }
-
 	$('#submitbtn').on('click', function(e){
-        // if(!validatePassword()){
-        //     console.log("FALSE");
-        //     return;
-        // }
-		//e.preventDefault()
-        console.log("SECOND");
+        
 		$.ajax({
 			type: 'POST',
 			url: '/register/auth',
