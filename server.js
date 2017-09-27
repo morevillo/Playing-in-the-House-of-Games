@@ -27,20 +27,6 @@ app.use(session({
 	}
 }));
 
-// app.use(function(req, res, next) {
-// 	if(req.headers.origin){
-// 		res.header("Access-Control-Allow-Origin", "*");
-// 	  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-// 	  	res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");	
-//   		if(req.method==='OPTIONS'){return res.send(200)}
-// 	}
-	
-//   	next();
-// });
-
-// app.use(cors());
-//app.options('*', cors());
-
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -88,10 +74,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 var methodOverride = require('method-override');
 
-// app.set('views', __dirname + '/public/views');
 app.set('views', __dirname);
 app.set('view engine', 'ejs');
-// app.engine('html', require('ejs').renderFile);
 
 app.use('/scripts', express.static(__dirname + '/node_modules/bootstrap/dist/'));
 // app.use('/css', express.static(__dirname + '/public/css'));
@@ -115,9 +99,8 @@ passport.use('local-login', new LocalStrategy({
 }, function(req, username, password, done){
 	console.log("Entering login strategy");
 	pool.query("SELECT * FROM users WHERE username = $1", [username], function(err, result){
-		console.log("Querying for login " + result);
+		
 		if(err){
-			console.log("Unsuccessfull Login :(");
 			return done(err);
 		}
 		//Check if username exists
@@ -125,7 +108,7 @@ passport.use('local-login', new LocalStrategy({
 			console.log("Wrong username");
             return done(null, false, req.flash('loginMessage', 'Incorrect username/password'));
         }
-        //Check password, TODO: use brcypt
+        //Check if password is the same
         if(!bcrypt.compareSync(password, result.rows[0].password)){
         	console.log("Wrong password");
         	return done(null, false, req.flash('loginMessage', 'Incorrect username/password'));
@@ -145,8 +128,6 @@ passport.use('local-signup', new LocalStrategy({
     passReqToCallback : true // allows us to pass back the entire request to the callback
 }, function(req, username, password, done){
 	process.nextTick(function(){
-		//DO queries here?
-		console.log("Querying now...");
 		pool.query("SELECT * FROM users where username = $1", [req.body.username], function(err, result){
 			// console.log("Querying now...");
 				if(err){
@@ -161,18 +142,15 @@ passport.use('local-signup', new LocalStrategy({
 						var user = {
 							username: username,
 							// password: password
-							password: bcrypt.hashSync(password, null, null)
+							password: bcrypt.hashSync(password, null, null)//hash password
 						};
 
-						console.log("Doesn't exist");
 						var values = [req.body.fname, req.body.lname, user.username, req.body.email, req.body.gender, req.body.age, req.body.ethnicity, user.password];
 						pool.query("INSERT INTO users (fname, lname, username, email, gender, age, ethnicity, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);", values, function(err, result){
 							//client.release();
 							if(err){
 								return done(err);
 							}else{
-								console.log("SUCESSFULLY ADDED USER!!");
-								
 								return done(null, user);
 							}
 						});
@@ -185,30 +163,33 @@ passport.use('local-signup', new LocalStrategy({
 //===================ROUTES===========================//
 
 app.get('/', function(req, res) {
-    //res.sendFile(path.join(__dirname + '/public/index.html'));
-    // res.render('index.html');
-
+	res.status(200);
     res.render('pages/home',{
     	message: req.flash('unauthorized')
     });
 });
 
+//Render Register page
 app.get('/register', function(req, res){
-	//res.setHeader('Cache-Control', 'public, max-age= 3600');
+	res.status(200);
 	res.render('pages/register', { message: req.flash('signupMessage') });
 });
 
+//Go through passports local signup strategy
 app.post('/register/auth', passport.authenticate('local-signup', {
         successRedirect : '/pregame', // redirect to pregame questionnaire if success
         failureRedirect : '/register', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
 }));
 
+// Render Terms and Conditions Page
 app.get('/disclaimer',function(req, res){
+	res.status(200);
 	res.render('pages/disclaimer');
 });
 
 app.get('/pregame', isLoggedIn, function(req, res){
+	res.status(200);
 	res.render('pages/pregame', {
 		message: req.flash('loginMessage')
 	});
@@ -219,17 +200,16 @@ app.post('/pregame/auth', function(req, res){
 
 	pool.query("INSERT INTO pregame (username, priv_val, social_media, freq, tnc) VALUES ($1, $2, $3, $4, $5);", values, function(err, result){
 		if(err){
-			console.log("Error inserting items to database in pregame questionnaire");
-			console.log(err);
-			console.log("END");
+			res.status(500).send('Internal Server Error when adding row into pregame table');
 			return;
 		}
 	});
-
+	res.status(200);
 	res.send({redirect: '/gameinfo'});
 });
 
 app.get('/gameinfo', isLoggedIn, function(req, res){
+	res.status(200);
 	res.render('pages/gameinfo');
 });
 
@@ -238,14 +218,11 @@ app.post('/gameinfo/auth', function(req, res){
 
 	pool.query("UPDATE users SET opponent=$1 WHERE username=$2;", values, function(err, result){
 		if(err){
-			console.log("Error inserting opponent to users");
-			console.log(err);
-			console.log("END");
+			res.status(500).send('Internal Server Error when updating row into users table');
 			return;
 		}
 	});
-
-	console.log("SUCCESSFULLY ADDED OPPONENT INTO USERS TABLE: " + req.user.username + " opponent: " + req.body.opponent);
+	res.status(200);
 });
 
 app.get('/game', isLoggedIn, function(req, res){
@@ -254,11 +231,11 @@ app.get('/game', isLoggedIn, function(req, res){
 	var value = [req.user.username];
 	pool.query('SELECT opponent FROM users WHERE username=$1', value, function(err, rows, fields){
     if(err){
-      next(err);
+      res.status(500).send('Internal Server Error when finding opponent');
       return;
     }
     result.results = {opponent:rows.rows[0].opponent};
-    console.log("RESULT FOR SUMMARY IS: " + result.results);
+    res.status(200);
     res.render('pages/game', {result:result});
   });
 });
@@ -268,14 +245,11 @@ app.post('/game/auth', function(req, res){
 
 	pool.query("INSERT INTO game1 (username, round1money, round1status) VALUES ($1, $2, $3);", values, function(err, result){
 		if(err){
-			console.log("Error inserting items to database in game results");
-			console.log(err);
-			console.log("END");
+			res.status(500).send('Internal Server Error when adding row into game1 table');
 			return;
 		}
 	});
-
-	console.log("SUCCESSFULLY ADDED ROW INTO GAME1 TABLE: " + req.user.username + " money: " + req.body.round1money + " stat: " +round1status);
+	res.status(200);
 });
 
 app.get('/round2', isLoggedIn, function(req, res){
@@ -285,10 +259,11 @@ app.get('/round2', isLoggedIn, function(req, res){
 	pool.query('SELECT opponent FROM users WHERE username=$1', value, function(err, rows, fields){
     if(err){
       next(err);
+      res.status(500).send('Internal Server Error when finding opponent');
       return;
     }
     result.results = {opponent:rows.rows[0].opponent};
-    console.log("RESULT FOR SUMMARY IS: " + result.results);
+    res.status(200);
     res.render('pages/round2', {result:result});
   });
 });
@@ -298,12 +273,11 @@ app.post('/round2/auth', function(req, res){
 
 	pool.query("INSERT INTO game2 (username, round2money, round2status)  VALUES ($1, $2, $3);", values, function(err, result){
 		if(err){
-			console.log("Error inserting items to database in game2 results");
-			console.log(err);
-			console.log("END");
+			res.status(500).send('Internal Server Error when adding row into game2 table');
 			return;
 		}
 	});
+	res.status(200);
 });
 
 app.get('/round3', isLoggedIn, function(req, res){
@@ -312,11 +286,12 @@ app.get('/round3', isLoggedIn, function(req, res){
 	var value = [req.user.username];
 	pool.query('SELECT opponent FROM users WHERE username=$1', value, function(err, rows, fields){
     if(err){
+      res.status(500).send('Internal Server Error when finding opponent');
       next(err);
       return;
     }
     result.results = {opponent:rows.rows[0].opponent};
-    console.log("RESULT FOR SUMMARY IS: " + result.results);
+    res.status(200);
     res.render('pages/round3', {result:result});
   });
 });
@@ -326,12 +301,11 @@ app.post('/round3/auth', function(req, res){
 
 	pool.query("INSERT INTO game3 (username, round3money, round3status) VALUES ($1, $2, $3);", values, function(err, result){
 		if(err){
-			console.log("Error inserting items to database in round3 of game");
-			console.log(err);
-			console.log("END");
+			res.status(500).send('Internal Server Error when adding row into game3 table');
 			return;
 		}
 	});
+	res.status(200);
 });
 
 app.get('/summary', isLoggedIn, function(req, res){
@@ -340,12 +314,13 @@ app.get('/summary', isLoggedIn, function(req, res){
 	var value = [req.user.username];
   	pool.query('SELECT round1status, round1money FROM game1 WHERE username=$1', value, function(err, rows, fields){
     if(err){
+      res.status(500).send('Internal Server Error when showing summary page');
       next(err);
       return;
     }
     result.results = {status:rows.rows[0].round1status,
     	money: rows.rows[0].round1money};
-    console.log("RESULT FOR SUMMARY IS: " + result.results);
+    res.status(200);
     res.render('pages/summary', {result:result});
   });
 });
@@ -356,12 +331,13 @@ app.get('/summary2', isLoggedIn, function(req, res){
 	var value = [req.user.username];
   	pool.query('SELECT round2status, round2money FROM game2 WHERE username=$1', value, function(err, rows, fields){
     if(err){
-      next(err);
-      return;
+    	res.status(500).send('Internal Server Error when showing summary page');
+      	next(err);
+      	return;
     }
     result.results = {status:rows.rows[0].round2status,
     	money: rows.rows[0].round2money};
-    console.log("RESULT FOR SUMMARY IS: " + result.results);
+    res.status(200);
     res.render('pages/summary2', {result:result});
   });
 });
@@ -372,8 +348,9 @@ app.get('/summary3', isLoggedIn, function(req, res){
 	var value = [req.user.username];
   	pool.query('SELECT * FROM users NATURAL JOIN game1 NATURAL JOIN game2 NATURAL JOIN game3 WHERE username=$1', value, function(err, rows, fields){
     if(err){
-      next(err);
-      return;
+    	res.status(500).send('Internal Server Error when showing summary page');
+     	next(err);
+      	return;
     }
     result.results = {
     	opponent: rows.rows[0].opponent,
@@ -384,40 +361,38 @@ app.get('/summary3', isLoggedIn, function(req, res){
     	money2: rows.rows[0].round2money,
     	money3: rows.rows[0].round3money
     };
-    console.log("RESULT FOR SUMMARY IS: " + result.results);
+    res.status(200);
     res.render('pages/summary3', {result:result});
   });
 });
 
 app.get('/postgame', isLoggedIn, function(req, res){
+	res.status(200);
 	res.render('pages/postgame', {
 		message: req.flash('loginMessage')
 	});
 });
 
 app.post('/postgame/auth', function(req, res){
-	console.log("YOUR USERNAME IS: " + req.user.username);
 	var values = [req.user.username, req.body.lotto, req.body.urn, req.body.real_person, req.body.purpose, req.body.concern];
-	var i = 0;
-	for(i=0; i < values.length; i++){
-		console.log("VALUES: " + values[i]);
-	}
-
+	
 	pool.query("INSERT INTO postgame (username, lotto, urn, real_person, purpose, concern) VALUES ($1, $2, $3, $4, $5, $6);", values, function(err, result){
 		if(err){
-			console.log("Error inserting items to database in pregame questionnaire");
+			res.status(500).send('Internal Server Error when adding row into table');
 			return;
 		}
 	});
-
+	res.status(200);
 	res.send({redirect: '/finish'});
 });
 
 app.get('/finish', function(req, res){
+	res.status(200);
 	res.render('pages/finish');
 });
 
 app.get('/login', function(req, res){
+	res.status(200);
 	res.render('pages/login', { message: req.flash('loginMessage') });
 });
 
