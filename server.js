@@ -213,7 +213,7 @@ app.get('/gameinfo', isLoggedIn, function(req, res){
 	res.render('pages/gameinfo');
 });
 
-app.post('/gameinfo/auth', function(req, res){
+app.put('/gameinfo/auth', function(req, res){
 	var values = [req.body.opponent, req.user.username];
 
 	pool.query("UPDATE users SET opponent=$1 WHERE username=$2;", values, function(err, result){
